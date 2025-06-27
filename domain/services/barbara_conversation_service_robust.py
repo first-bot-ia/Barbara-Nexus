@@ -347,8 +347,27 @@ class BarbaraConversationServiceRobust:
                 email = self._extract_email(message)
                 if email:
                     memory.email = email
-                    memory.conversation_state = ConversationState.EMAIL_CONFIRMED
-                    return f"¡Perfecto {memory.user_name}! He enviado tu cotización a {email}. ¡Revisa tu bandeja de entrada!"
+                    
+                    # 📧 ENVÍO REAL POR MAILTRAP - Integración con servicio externo
+                    email_sent = self._send_email_via_mailtrap(memory, email)
+                    
+                    # 🔧 MANEJO TRANSPARENTE DE MAILTRAP DEMO RESTRICTION  
+                    owner_email = "jaircastillo2302@gmail.com"
+                    email_redirect = email.lower() != owner_email.lower()
+                    
+                    if email_sent:
+                        # ✅ EMAIL ENVIADO EXITOSAMENTE
+                        memory.conversation_state = ConversationState.EMAIL_CONFIRMED
+                        
+                        if email_redirect:
+                            # Email fue redirigido al propietario debido a limitación Demo
+                            return f"¡Perfecto {memory.user_name}! Tu cotización ha sido procesada. Debido a limitaciones de nuestro sistema demo, he enviado la cotización a nuestro email corporativo y te contactaremos directamente. También puedes llamarnos al +51 999 888 777 para recibir tu cotización inmediatamente."
+                        else:
+                            # Email enviado al destinatario original
+                            return f"¡Perfecto {memory.user_name}! ✅ He enviado tu cotización a {email}. ¡Revisa tu bandeja de entrada (y spam si es necesario)!"
+                    else:
+                        # ❌ ERROR EN ENVÍO DE EMAIL
+                        return f"Lo siento {memory.user_name}, hubo un problema enviando tu cotización a {email}. ¿Podrías verificar que el correo esté correcto? También puedes llamarnos al +51 999 888 777."
                 else:
                     return "Por favor proporciona un correo válido (ej: tu@email.com)"
             
@@ -760,3 +779,98 @@ class BarbaraConversationServiceRobust:
             return None
         except Exception:
             return None
+
+    def _send_email_via_mailtrap(self, memory: RobustConversationMemory, email: str) -> bool:
+        """Envía email real via Mailtrap usando datos de la cotización"""
+        try:
+            self.logger.info(f"🚀 INICIANDO ENVÍO DE EMAIL VIA MAILTRAP para {email}")
+            
+            # 🔧 MAILTRAP DEMO RESTRICTION HANDLER
+            # Mailtrap Demo solo acepta emails al propietario de la cuenta
+            owner_email = "jaircastillo2302@gmail.com"
+            if email.lower() != owner_email.lower():
+                self.logger.warning(f"⚠️ MAILTRAP DEMO RESTRICTION: {email} != {owner_email}")
+                self.logger.warning("📧 Redirigiendo email al propietario de la cuenta")
+                email = owner_email  # Usar email del propietario
+            
+            # Importar servicio de Mailtrap
+            from infrastructure.external_apis.mailtrap_sending_service import MailtrapSendingService
+            self.logger.info("✅ Servicio Mailtrap importado correctamente")
+            
+            # Validar que tenemos nombre de usuario
+            if not memory.user_name:
+                self.logger.error("❌ No hay nombre de usuario para enviar email")
+                return False
+            self.logger.info(f"✅ Nombre de usuario validado: {memory.user_name}")
+            
+            # Validar que tenemos datos de cotización
+            if not hasattr(memory, 'quote_data') or not memory.quote_data:
+                self.logger.error("❌ No hay datos de cotización para enviar por email")
+                self.logger.error(f"❌ Memory attributes: {dir(memory)}")
+                return False
+            self.logger.info(f"✅ Datos de cotización encontrados: {memory.quote_data}")
+            
+            # 🔧 PREPARAR DATOS CON VALORES GARANTIZADOS (NO NULOS)
+            vehicle_type = memory.vehicle_type or 'Auto'
+            vehicle_year = memory.vehicle_year or '2024'
+            vehicle_usage = memory.vehicle_usage or 'Particular'
+            city = memory.city or 'Lima'
+            quote_id = memory.quote_data.get('quote_id', 'AF20250627001')
+            price = memory.quote_data.get('price', 160)
+            
+            # Preparar datos de cotización para Mailtrap con VALORES GARANTIZADOS
+            cotizacion_data = {
+                'numero_cotizacion': quote_id,  # Garantizado no nulo
+                'tipo_vehiculo': f"{vehicle_type.title()} {vehicle_year}",  # Garantizado no nulo
+                'precio_final': f"S/ {price:.0f}",  # Garantizado no nulo
+                'year': vehicle_year,
+                'usage': vehicle_usage, 
+                'city': city
+            }
+            self.logger.info(f"✅ Datos preparados para Mailtrap: {cotizacion_data}")
+            
+            # 🔍 VALIDACIÓN FINAL CON LOGS DETALLADOS
+            validation_checks = {
+                'numero_cotizacion': bool(cotizacion_data['numero_cotizacion'] and cotizacion_data['numero_cotizacion'].strip()),
+                'tipo_vehiculo': bool(cotizacion_data['tipo_vehiculo'] and cotizacion_data['tipo_vehiculo'].strip()),
+                'precio_final': bool(cotizacion_data['precio_final'] and cotizacion_data['precio_final'].strip())
+            }
+            
+            self.logger.info(f"🔍 Validación individual: {validation_checks}")
+            
+            if not all(validation_checks.values()):
+                self.logger.error("❌ Datos de cotización incompletos para email")
+                self.logger.error(f"❌ Datos: {cotizacion_data}")
+                for field, is_valid in validation_checks.items():
+                    if not is_valid:
+                        self.logger.error(f"❌ Campo inválido: {field} = '{cotizacion_data[field]}'")
+                return False
+            self.logger.info("✅ Datos de cotización validados completamente")
+            
+            # Inicializar servicio de Mailtrap
+            self.logger.info("🔧 Inicializando servicio Mailtrap...")
+            mailtrap_service = MailtrapSendingService()
+            self.logger.info("✅ Servicio Mailtrap inicializado")
+            
+            # Enviar email real (ahora user_name es garantizado str)
+            self.logger.info(f"📧 ENVIANDO EMAIL REAL a {email} para {memory.user_name}")
+            success = mailtrap_service.send_quotation_email(
+                recipient_email=email,
+                client_name=memory.user_name,  # Ya validado que no es None
+                cotizacion=cotizacion_data,
+                attach_pdf=True  # Incluir PDF si está disponible
+            )
+            
+            if success:
+                self.logger.info(f"🎉 EMAIL ENVIADO EXITOSAMENTE a {email}")
+                return True
+            else:
+                self.logger.error(f"❌ ERROR: Mailtrap service returned False for {email}")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"❌ EXCEPCIÓN EN ENVÍO DE EMAIL: {e}")
+            self.logger.error(f"❌ Tipo de error: {type(e).__name__}")
+            import traceback
+            self.logger.error(f"❌ Stack trace: {traceback.format_exc()}")
+            return False
