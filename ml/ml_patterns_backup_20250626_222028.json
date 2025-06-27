@@ -1,0 +1,378 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "last_save": "2025-06-26T22:20:19.154364",
+    "total_patterns": 2
+  },
+  "patterns": {
+    "successful_responses": {
+      "ai_intelligent": [
+        {
+          "user_input": "seguro vehicular completo, con 140 soles y quiero mi cotizacion",
+          "bot_response": "¡Hola!  👋  Soy tu asistente experto de Autofondo Alese,  y me alegra ayudarte con tu consulta sobre seguros vehiculares.\n\nEntiendo que buscas un seguro vehicular completo por alrededor de S/ 140.  Con ese presupuesto, probablemente estemos hablando de un SOAT, ¿cierto? 🤔\n\nPara darte una cotización precisa del SOAT 2024, necesito saber el tipo de vehículo: ¿auto, moto o taxi?  Los precios varían según el tipo de vehículo,  y  para autos están entre S/ 140 y S/ 180 aproximadamente.  Para motos, entre S/ 90 y S/ 130, y para taxis, entre S/ 220 y S/ 280.\n\nSi te interesa un seguro más completo que el SOAT, como un seguro vehicular con cobertura contra accidentes, robo, etc.,  el precio variará según la cobertura que elijas y las características de tu vehículo.  En ese caso,  es mejor que te pongas en contacto con uno de nuestros asesores para que te brinden una cotización personalizada.  Puedes llamarnos al +51 999 888 777.  📞\n\n¡Estamos para ayudarte!  Recuerda que en Autofondo Alese, con más de 27 años de experiencia, somos líderes en seguros vehiculares en Perú.\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057663",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "quiero que me mandes la cotización a mi email",
+          "bot_response": "¡Hola!  Claro que sí, con gusto te envío la cotización a tu correo electrónico.  Para poder hacerlo, necesito un poquito más de información 😉 ¿Qué tipo de seguro necesitas?  ¿SOAT, un seguro vehicular completo, o algo más específico?\n\nSi es un SOAT, te cuento que los precios para este 2024 andan por ahí:  Autos entre S/140 y S/180, motos entre S/90 y S/130, y taxis entre S/220 y S/280.  Pero recuerda que el precio final depende del tipo de vehículo y otras cositas.\n\nDime qué necesitas y tu correo electrónico, ¡y ya mismo te mando esa cotización!  Si tienes alguna duda, no dudes en llamarnos al +51 999 888 777, uno de nuestros asesores te atenderá con gusto.  ¡Estamos para ayudarte! 😊\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057680",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "seguro a todo riesgo",
+          "bot_response": "¡Hola!  ¿Qué tal todo?  Soy tu asistente experto de Autofondo Alese,  ¡y me alegra poder ayudarte con tu consulta sobre seguros a todo riesgo! 😊\n\nEntiendo que te interesa saber más sobre nuestros seguros a todo riesgo para vehículos.  Es una excelente opción para tener una protección completa, ¿verdad?  Para darte una cotización precisa, necesito un poco más de información.  Dime, ¿qué tipo de vehículo tienes en mente asegurar?  (Auto, moto, taxi, etc.)  ¿Cuál es el año de fabricación y modelo?\n\nMientras me das esos detalles, te cuento que en Autofondo Alese, con más de 27 años de experiencia, nos preocupamos por ofrecerte la mejor cobertura. Nuestros seguros a todo riesgo incluyen una amplia gama de beneficios, desde la protección contra accidentes hasta la cobertura por robo o vandalismo. ¡Tranquilidad asegurada! \n\nSi tu consulta es sobre el SOAT,  los precios para este 2024 son aproximados y varían según el tipo de vehículo:  Autos (S/ 140 - S/ 180), Motos (S/ 90 - S/ 130) y Taxis (S/ 220 - S/ 280).  Recuerda que esto es solo un rango, el precio final dependerá de otros factores.\n\nPara una cotización personalizada de tu seguro a todo riesgo,\n\n¡Genial! Por cierto, ¿cómo te gusta que te llame?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057686",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "tengo un toyota corolla",
+          "bot_response": "¡Hola!  ¿Qué tal todo?  Oye, chévere que tengas un Toyota Corolla, ¡un clásico!  ¿En qué te puedo ayudar con respecto a tu seguro vehicular? 🤔\n\nPara darte la mejor información, necesito saber qué tipo de seguro te interesa.  ¿Estás buscando un SOAT, un seguro contra terceros, o quizás un seguro a todo riesgo?  \n\nSi es el SOAT,  para un auto como el Corolla, el precio anda por los S/ 140 a S/ 180 soles este 2024,  pero el precio exacto depende de algunos detalles como el año del modelo y la cilindrada.  \n\nSi quieres una cotización precisa o necesitas información sobre otros tipos de seguros, como uno a todo riesgo que te cubra por cualquier daño,  con gusto te ayudo.  Puedes llamarnos al +51 999 888 777 y uno de nuestros asesores te dará toda la información que necesitas.  ¡Estamos para ayudarte! 😊\n\nExcelente elección. ¿Me puedes decir tu nombre para personalizar tu cotización?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057690",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "quiero una cotización para mí vehucul",
+          "bot_response": "¡Hola! 👋  ¿Qué tal?  Entiendo que necesitas una cotización para tu vehículo. ¡Genial!  Para poder ayudarte mejor, necesito un poquito más de información.  Dime, ¿de qué tipo de vehículo se trata?  (auto, moto, taxi, etc.) y ¿qué tipo de seguro te interesa? (SOAT, Seguro vehicular completo, etc.).\n\nSi lo que necesitas es un SOAT,  te puedo dar una idea de los precios para este 2024:  rondan entre S/ 140 y S/ 180 para autos, entre S/ 90 y S/ 130 para motos, y entre S/ 220 y S/ 280 para taxis.  Recuerda que el precio final depende de varios factores como el modelo y año de tu vehículo.\n\nPero para darte una cotización exacta y personalizada,  necesito algunos datos más.  No te preocupes, es rápido 😉\n\nSi prefieres hablar directamente con uno de nuestros asesores, puedes llamarnos al +51 999 888 777. Ellos te atenderán con gusto y te darán la cotización que necesitas al instante.\n\n¡Espero tu respuesta!  😊\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057695",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "si mi email es jaircastillo2302@gmail.com",
+          "bot_response": "¡Hola Jair Castillo! ¿Qué tal?  👋  Soy tu asistente experto de Autofondo Alese, ¡y me alegra poder ayudarte con tu consulta!\n\nVi que tu correo es jaircastillo2302@gmail.com.  Genial,  así te puedo tener identificado.  Dime, ¿en qué te puedo ayudar hoy?  ¿Necesitas una cotización de seguro vehicular?  \n\nSi estás pensando en un SOAT para este 2024, los precios varían según el tipo de vehículo.  Por darte una idea,  para autos andan entre S/140 y S/180, para motos entre S/90 y S/130, y para taxis entre S/220 y S/280.  Pero recuerda que el precio final depende de varios factores. 😉\n\nSi quieres una cotización exacta para tu vehículo, o si necesitas información sobre otros seguros como el Seguro Vehicular Completo,  con gusto te ayudo.  También puedo conectarte con uno de nuestros asesores, ellos son unos cracks y te pueden dar toda la información que necesitas al instante.  Su número es +51 999 888 777.  Llama sin compromiso, ¡te atenderán super bien! 👍\n\nCuéntame, ¿qué necesitas?  Estoy aquí para ayudarte. 😊\n\n¡Genial! Por cierto, ¿cómo te gusta que te llame?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057699",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "mi nombre es alexander",
+          "bot_response": "¡Hola Alexander! ¿Qué tal?  Soy tu asistente experto de Autofondo Alese, encantado de ayudarte con todo lo que necesites sobre seguros vehiculares.  ¿En qué te puedo ayudar hoy? 😊\n\nComo somos líderes en seguros en Perú con más de 27 años de experiencia,  podemos asesorarte con todo lo relacionado a tu vehículo, desde el SOAT hasta seguros más completos.  \n\nSi necesitas un SOAT, te cuento que los precios para este 2024 andan por ahí:  autos entre S/140 y S/180, motos entre S/90 y S/130, y taxis entre S/220 y S/280.  Pero ojo, el precio final depende de varios factores,  como el tipo de vehículo y su antigüedad.\n\nDime, ¿qué tipo de seguro te interesa o qué dudas tienes?  Si es algo más específico,  con gusto te ayudo Alexander.  Si no, siempre puedes llamarnos al +51 999 888 777 para hablar con uno de nuestros asesores.  ¡Estaremos felices de atenderte! 👍\n\n¿Tienes un email donde pueda enviarte ofertas especiales?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057711",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "hola",
+          "bot_response": "¡Hola! 👋  Bienvenid@ a Autofondo Alese, tu mejor opción en seguros vehiculares en Perú.  Llevaremos más de 27 años cuidando de nuestros clientes y estamos felices de poder ayudarte. ¿En qué podemos colaborar hoy? 😊\n\nDime, ¿qué te trae por aquí? ¿Necesitas información sobre nuestro SOAT?  Para darte una idea de los precios, en 2024, el SOAT para autos está entre S/140 y S/180, para motos entre S/90 y S/130, y para taxis entre S/220 y S/280.  Estos precios pueden variar según el tipo de vehículo y otras características.\n\nSi tienes alguna otra consulta sobre seguros vehiculares, como nuestro seguro vehicular completo, o necesitas una cotización personalizada, no dudes en contarme. Si prefieres hablar directamente con uno de nuestros asesores, puedes llamarnos al +51 999 888 777.  Estaremos encantados de atenderte.\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057714",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "mi email \njaircastillo2302@gmail.com",
+          "bot_response": "¡Hola! Estoy aquí para ayudarte con seguros vehiculares.\n\n🎯 ¿En qué puedo asistirte?\n• Cotización SOAT al instante\n• Información de coberturas  \n• Precios actualizados 2024\n• Contacto con asesor especializado\n\nCuéntame qué necesitas específicamente.\n\n¡Genial! Por cierto, ¿cómo te gusta que te llame?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057718",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "hola",
+          "bot_response": "Hola! ¿En qué te puedo ayudar hoy?  Recuerda que una pregunta a la vez, por favor.\n\nExcelente elección. ¿Me puedes decir tu nombre para personalizar tu cotización?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881199",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "seguro vehicular completo, con 140 soles y quiero mi cotizacion",
+          "bot_response": "¡Hola!  👋  Soy tu asistente experto de Autofondo Alese,  y me alegra ayudarte con tu consulta sobre seguros vehiculares.\n\nEntiendo que buscas un seguro vehicular completo por alrededor de S/ 140.  Con ese presupuesto, probablemente estemos hablando de un SOAT, ¿cierto? 🤔\n\nPara darte una cotización precisa del SOAT 2024, necesito saber el tipo de vehículo: ¿auto, moto o taxi?  Los precios varían según el tipo de vehículo,  y  para autos están entre S/ 140 y S/ 180 aproximadamente.  Para motos, entre S/ 90 y S/ 130, y para taxis, entre S/ 220 y S/ 280.\n\nSi te interesa un seguro más completo que el SOAT, como un seguro vehicular con cobertura contra accidentes, robo, etc.,  el precio variará según la cobertura que elijas y las características de tu vehículo.  En ese caso,  es mejor que te pongas en contacto con uno de nuestros asesores para que te brinden una cotización personalizada.  Puedes llamarnos al +51 999 888 777.  📞\n\n¡Estamos para ayudarte!  Recuerda que en Autofondo Alese, con más de 27 años de experiencia, somos líderes en seguros vehiculares en Perú.\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881222",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "quiero que me mandes la cotización a mi email",
+          "bot_response": "¡Hola!  Claro que sí, con gusto te envío la cotización a tu correo electrónico.  Para poder hacerlo, necesito un poquito más de información 😉 ¿Qué tipo de seguro necesitas?  ¿SOAT, un seguro vehicular completo, o algo más específico?\n\nSi es un SOAT, te cuento que los precios para este 2024 andan por ahí:  Autos entre S/140 y S/180, motos entre S/90 y S/130, y taxis entre S/220 y S/280.  Pero recuerda que el precio final depende del tipo de vehículo y otras cositas.\n\nDime qué necesitas y tu correo electrónico, ¡y ya mismo te mando esa cotización!  Si tienes alguna duda, no dudes en llamarnos al +51 999 888 777, uno de nuestros asesores te atenderá con gusto.  ¡Estamos para ayudarte! 😊\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881235",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "seguro a todo riesgo",
+          "bot_response": "¡Hola!  ¿Qué tal todo?  Soy tu asistente experto de Autofondo Alese,  ¡y me alegra poder ayudarte con tu consulta sobre seguros a todo riesgo! 😊\n\nEntiendo que te interesa saber más sobre nuestros seguros a todo riesgo para vehículos.  Es una excelente opción para tener una protección completa, ¿verdad?  Para darte una cotización precisa, necesito un poco más de información.  Dime, ¿qué tipo de vehículo tienes en mente asegurar?  (Auto, moto, taxi, etc.)  ¿Cuál es el año de fabricación y modelo?\n\nMientras me das esos detalles, te cuento que en Autofondo Alese, con más de 27 años de experiencia, nos preocupamos por ofrecerte la mejor cobertura. Nuestros seguros a todo riesgo incluyen una amplia gama de beneficios, desde la protección contra accidentes hasta la cobertura por robo o vandalismo. ¡Tranquilidad asegurada! \n\nSi tu consulta es sobre el SOAT,  los precios para este 2024 son aproximados y varían según el tipo de vehículo:  Autos (S/ 140 - S/ 180), Motos (S/ 90 - S/ 130) y Taxis (S/ 220 - S/ 280).  Recuerda que esto es solo un rango, el precio final dependerá de otros factores.\n\nPara una cotización personalizada de tu seguro a todo riesgo,\n\n¡Genial! Por cierto, ¿cómo te gusta que te llame?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881244",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "tengo un toyota corolla",
+          "bot_response": "¡Hola!  ¿Qué tal todo?  Oye, chévere que tengas un Toyota Corolla, ¡un clásico!  ¿En qué te puedo ayudar con respecto a tu seguro vehicular? 🤔\n\nPara darte la mejor información, necesito saber qué tipo de seguro te interesa.  ¿Estás buscando un SOAT, un seguro contra terceros, o quizás un seguro a todo riesgo?  \n\nSi es el SOAT,  para un auto como el Corolla, el precio anda por los S/ 140 a S/ 180 soles este 2024,  pero el precio exacto depende de algunos detalles como el año del modelo y la cilindrada.  \n\nSi quieres una cotización precisa o necesitas información sobre otros tipos de seguros, como uno a todo riesgo que te cubra por cualquier daño,  con gusto te ayudo.  Puedes llamarnos al +51 999 888 777 y uno de nuestros asesores te dará toda la información que necesitas.  ¡Estamos para ayudarte! 😊\n\nExcelente elección. ¿Me puedes decir tu nombre para personalizar tu cotización?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881252",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        },
+        {
+          "user_input": "quiero una cotización para mí vehucul",
+          "bot_response": "¡Hola! 👋  ¿Qué tal?  Entiendo que necesitas una cotización para tu vehículo. ¡Genial!  Para poder ayudarte mejor, necesito un poquito más de información.  Dime, ¿de qué tipo de vehículo se trata?  (auto, moto, taxi, etc.) y ¿qué tipo de seguro te interesa? (SOAT, Seguro vehicular completo, etc.).\n\nSi lo que necesitas es un SOAT,  te puedo dar una idea de los precios para este 2024:  rondan entre S/ 140 y S/ 180 para autos, entre S/ 90 y S/ 130 para motos, y entre S/ 220 y S/ 280 para taxis.  Recuerda que el precio final depende de varios factores como el modelo y año de tu vehículo.\n\nPero para darte una cotización exacta y personalizada,  necesito algunos datos más.  No te preocupes, es rápido 😉\n\nSi prefieres hablar directamente con uno de nuestros asesores, puedes llamarnos al +51 999 888 777. Ellos te atenderán con gusto y te darán la cotización que necesitas al instante.\n\n¡Espero tu respuesta!  😊\n\nPerfecto. Para darte un mejor servicio, ¿cuál es tu nombre?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T20:44:39.881260",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        }
+      ],
+      "cotizacion": [
+        {
+          "user_input": "1 y quiero recibir la cotización por email",
+          "bot_response": "\n🎯 *COTIZACIÓN SOAT - AUTOFONDO ALESE*\n\n*👤 Cliente:* Cliente\n*📅 Fecha:* 26/06/2025 15:19\n\n*🚗 DATOS DEL VEHÍCULO:*\n• Tipo: Auto\n• Ubicación: Lima\n• Uso: Particular\n\n*💰 MEJORES OPCIONES:*\n\n1️⃣ *Interseguro*\n   💵 S/ 140\n   🎁 Hasta S/0.90 por galón gasolina\n\n2️⃣ *Pacífico*\n   💵 S/ 150\n   🎁 Desde S/39.90 + beneficios\n\n3️⃣ *RIMAC*\n   💵 S/ 155\n   🎁 20% desc. baterías + iPad sorteo\n\n*✅ COBERTURA SOAT 2024:*\n• Muerte: 4 UIT\n• Gastos médicos: Hasta 5 UIT  \n• Invalidez: Hasta 4 UIT\n• Sepelio: Hasta 1 UIT\n\n*⏰ Vigencia:* 12 meses\n\n*📧 ¿QUIERES RECIBIR LA COTIZACIÓN POR EMAIL?*\nCompártenos tu email y te enviaremos un PDF completo con todos los detalles.\n\n*🚀 SIGUIENTE PASO:*\n• Responde con el número de tu opción preferida (1, 2 o 3)\n• Escribe \"ASESOR\" para hablar con un especialista\n• Llámanos: +51 999 888 777\n\n*¡Protege tu vehículo hoy mismo!* 🛡️\n\n\nExcelente elección. ¿Me puedes decir tu nombre para personalizar tu cotización?",
+          "success_score": 1.0,
+          "timestamp": "2025-06-26T16:32:00.057722",
+          "context": {
+            "vehicle_mentioned": false,
+            "location_mentioned": false,
+            "price_inquiry": false,
+            "urgency": false,
+            "comparison": false
+          }
+        }
+      ]
+    },
+    "user_preferences": {
+      "+51999000000": {
+        "preferred_communication_style": "casual",
+        "common_inquiries": [
+          "seguros"
+        ],
+        "response_time_preference": "immediate",
+        "detail_level_preference": "medium",
+        "last_updated": "2025-06-26T20:40:50.078689"
+      },
+      "whatsapp:+51960454985": {
+        "preferred_communication_style": "casual",
+        "common_inquiries": [
+          "seguros"
+        ],
+        "response_time_preference": "immediate",
+        "detail_level_preference": "medium",
+        "last_updated": "2025-06-26T20:45:01.479649"
+      }
+    },
+    "context_patterns": {},
+    "conversion_triggers": {},
+    "personalization_data": {},
+    "ai_responses": [
+      {
+        "user_message": "Hola, quiero cotizar SOAT",
+        "ai_response": "¡Hola!  Para tu SOAT, el precio estimado es de S/140-180 para auto y S/90-130 para moto.  Llama al +51 999 888 777 para una cotización precisa.",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T16:14:45.566736",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Hola, quiero cotizar SOAT",
+        "ai_response": "Hola!  Para cotizar tu SOAT, necesito algunos datos. ¿Es auto o moto?  Aproximadamente, un SOAT para auto cuesta entre S/140 y S/180, y para moto entre S/90 y S/130.  Para una cotización precisa, llama a nuestro asesor al +51 999 88",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T16:16:54.406689",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Hola",
+        "ai_response": "¡Hola! ¿En qué te puedo ayudar hoy?",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T16:17:06.411688",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "necesito info del SOAT",
+        "ai_response": "Hola!  El SOAT para autos cuesta entre S/140 y S/180, y para motos entre S/90 y S/130.  Para más detalles, contáctame al +51 999 888 777.",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T16:17:08.665156",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Hola",
+        "ai_response": "Hola! ¿En qué te puedo ayudar hoy?  Recuerda que una pregunta a la vez, por favor.",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T16:32:00.056707",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Hola",
+        "ai_response": "¡Hola! ¿En qué te puedo ayudar hoy?",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:40:10.378690",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "quiero cotizar SOAT",
+        "ai_response": "¡Hola!  Para cotizar tu SOAT, necesito algunos datos.  Primero, ¿es auto o moto?  Un rango de precio estimado: Auto S/140-180, Moto S/90-130.  Para una cotización precisa, llama a nuestro asesor al +51 999 888 777.",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:40:20.087737",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "hola",
+        "ai_response": "Hola! ¿En qué te puedo ayudar hoy?  Recuerda que una consulta a la vez, por favor.",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:40:39.152170",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "necesito cotizar SOAT para mi auto",
+        "ai_response": "¡Hola!  Para cotizar tu SOAT necesito algunos datos de tu auto.  Primero, ¿es auto o moto?  (Autos aprox. S/140-180, Motos aprox. S/90-130.  Para más detalles, llama al +51 999 888 777)",
+        "phone_number": "+51999000000",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:40:50.077613",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Hola",
+        "ai_response": "¡Hola! ¿En qué te puedo ayudar hoy?",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:44:39.880336",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Alexander",
+        "ai_response": "Hola Alexander, ¿en qué te puedo ayudar hoy?  Recuerda, una pregunta a la vez.  Para SOAT, autos cuestan entre S/140-180 y motos entre S/90-130.  Llama al +51 999 888 777 para más información.",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T20:45:01.478911",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Alexander",
+        "ai_response": "Hola Alexander, ¡bienvenido a Autofondo Alese!  ¿En qué te puedo ayudar hoy con respecto a nuestros seguros vehiculares?  Si tu consulta es sobre el SOAT, los precios aproximados son entre S/140 y S/180 para autos y entre S/90 y S/130 para motos. ¿Te refieres a esto, o",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T21:11:29.461035",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Quiero para autos",
+        "ai_response": "¡Hola!  Mucho gusto, soy Bárbara, asesora de Autofondo Alese.  ¿Me podrías contar un poco más sobre qué tipo de cobertura necesitas para tu auto? ¿Te refieres a un SOAT, un seguro vehicular completo o algo específico?  Para darte una cotización precisa, necesito más información.  Como referencia, el precio del SOAT para autos oscila entre",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T21:11:52.327468",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Soat para autos",
+        "ai_response": "¡Hola!  En Autofondo Alese estamos para ayudarte con tu seguro vehicular. ¿Te refieres al SOAT para tu auto?  El precio aproximado oscila entre S/140 y S/180 para autos y entre S/90 y S/130 para motos.  Dime más detalles para poder ofrecerte la mejor opción.",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T21:12:16.383073",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Si soat para autos, quiero cotizar",
+        "ai_response": "¡Hola!  Mucho gusto, soy Bárbara, asesora de Autofondo Alese.  Con gusto te ayudo con la cotización de tu SOAT. ¿Te refieres a un SOAT para auto o para moto?  Para autos el precio oscila entre S/140 y S/180, mientras que para motos está entre S/90 y S/",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T21:12:36.892880",
+        "pending_feedback": true
+      },
+      {
+        "user_message": "Para auto !!! Que terca",
+        "ai_response": "¡Hola!  Entiendo que necesitas un seguro para tu auto. ¿Te refieres a un SOAT?  Para autos, el precio oscila entre S/140 y S/180, mientras que para motos está entre S/90 y S/130.  Dime más sobre lo que necesitas para poder ayudarte mejor.",
+        "phone_number": "whatsapp:+51960454985",
+        "ai_source": "gemini",
+        "timestamp": "2025-06-26T21:12:52.737228",
+        "pending_feedback": true
+      }
+    ],
+    "name_extraction_patterns": {},
+    "effective_prompts": {}
+  }
+}

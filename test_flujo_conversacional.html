@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test Flujo Conversacional Barbara</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .chat { border: 1px solid #ccc; height: 400px; overflow-y: auto; padding: 10px; margin: 20px 0; }
+        .message { margin: 10px 0; padding: 10px; border-radius: 10px; }
+        .user { background: #e3f2fd; text-align: right; }
+        .bot { background: #f1f8e9; }
+        input[type="text"] { width: 70%; padding: 10px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .test-buttons { margin: 20px 0; }
+        .test-buttons button { margin: 5px; background: #2196F3; }
+        .step { font-weight: bold; color: #d32f2f; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Barbara - Test Flujo Conversacional Paso a Paso</h1>
+    
+    <div class="step">FLUJO ESPERADO:</div>
+    <ol>
+        <li>Hola → ¿Cómo te llamas?</li>
+        <li>Juan → ¿En qué puedo ayudarte?</li>
+        <li>Cotizar SOAT → ¿Qué tipo de vehículo?</li>
+        <li>Auto → ¿De qué año?</li>
+        <li>2020 → ¿Cuál es el uso?</li>
+        <li>Particular → ¿En qué ciudad?</li>
+        <li>Lima → Cotización completa + ¿Enviar por correo?</li>
+        <li>mi_correo@gmail.com → ¡Enviado! ¡Gracias!</li>
+    </ol>
+
+    <div class="test-buttons">
+        <button onclick="testStep(1)">1. Hola</button>
+        <button onclick="testStep(2)">2. Juan</button>
+        <button onclick="testStep(3)">3. Cotizar SOAT</button>
+        <button onclick="testStep(4)">4. Auto</button>
+        <button onclick="testStep(5)">5. 2020</button>
+        <button onclick="testStep(6)">6. Particular</button>
+        <button onclick="testStep(7)">7. Lima</button>
+        <button onclick="testStep(8)">8. test@gmail.com</button>
+        <button onclick="clearChat()">🗑️ Limpiar</button>
+    </div>
+    
+    <div id="chat" class="chat"></div>
+    
+    <div>
+        <input type="text" id="messageInput" placeholder="Escribe tu mensaje..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <script>
+        const messages = [
+            'Hola',
+            'Juan', 
+            'Quiero cotizar mi SOAT',
+            'auto',
+            '2020',
+            'particular',
+            'Lima',
+            'test@gmail.com'
+        ];
+
+        function testStep(step) {
+            const message = messages[step - 1];
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+
+        function clearChat() {
+            document.getElementById('chat').innerHTML = '';
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Mostrar mensaje del usuario
+            addMessage(message, 'user');
+            input.value = '';
+
+            try {
+                // Simular webhook de WhatsApp
+                const body = `From=whatsapp%3A%2B51999TEST&Body=${encodeURIComponent(message)}`;
+                
+                const response = await fetch('http://localhost:5000/webhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: body
+                });
+
+                const responseText = await response.text();
+                
+                // Extraer mensaje del TwiML
+                const messageMatch = responseText.match(/<Message>(.*?)<\/Message>/s);
+                const botMessage = messageMatch ? messageMatch[1] : 'Error en respuesta';
+                
+                addMessage(botMessage, 'bot');
+                
+            } catch (error) {
+                addMessage('Error de conexión: ' + error.message, 'bot');
+            }
+        }
+
+        function addMessage(text, sender) {
+            const chat = document.getElementById('chat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<strong>${sender === 'user' ? 'Tú' : 'Barbara'}:</strong><br>${text.replace(/\n/g, '<br>')}`;
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html> 

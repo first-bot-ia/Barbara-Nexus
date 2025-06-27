@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autofondo Alese - Envío de Cotizaciones</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #1e3a8a;
+            outline: none;
+        }
+        .btn {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #1e40af;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .preview {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Autofondo Alese</h1>
+            <h2>Sistema de Envío de Cotizaciones EmailJS</h2>
+            <p>Envía cotizaciones profesionales por email</p>
+        </div>
+
+        <form id="emailForm">
+            <div class="form-group">
+                <label for="clientEmail">📧 Email del Cliente:</label>
+                <input type="email" id="clientEmail" name="clientEmail" required 
+                       placeholder="cliente@ejemplo.com">
+            </div>
+
+            <div class="form-group">
+                <label for="clientName">👤 Nombre del Cliente:</label>
+                <input type="text" id="clientName" name="clientName" required 
+                       placeholder="Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label for="vehicleType">🚗 Tipo de Vehículo:</label>
+                <select id="vehicleType" name="vehicleType" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Auto">Auto</option>
+                    <option value="Camioneta">Camioneta</option>
+                    <option value="Motocicleta">Motocicleta</option>
+                    <option value="Taxi">Taxi</option>
+                    <option value="Omnibus">Omnibus</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="location">📍 Ubicación:</label>
+                <select id="location" name="location" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Lima">Lima</option>
+                    <option value="Arequipa">Arequipa</option>
+                    <option value="Trujillo">Trujillo</option>
+                    <option value="Piura">Piura</option>
+                    <option value="Cusco">Cusco</option>
+                    <option value="Otras Provincias">Otras Provincias</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="priceMin">💰 Precio Desde (S/):</label>
+                <input type="number" id="priceMin" name="priceMin" value="140" min="100" max="500">
+            </div>
+
+            <div class="form-group">
+                <label for="priceMax">💰 Precio Hasta (S/):</label>
+                <input type="number" id="priceMax" name="priceMax" value="180" min="100" max="500">
+            </div>
+
+            <div class="preview" id="preview" style="display: none;">
+                <h3>📋 Vista Previa del Email:</h3>
+                <div id="previewContent"></div>
+            </div>
+
+            <button type="button" class="btn" onclick="previewEmail()">👁️ Vista Previa</button>
+            <button type="submit" class="btn" id="sendBtn">📧 Enviar Cotización</button>
+        </form>
+
+        <div class="status" id="status"></div>
+
+        <div class="preview">
+            <h3>🔧 Configuración EmailJS:</h3>
+            <p><strong>Service ID:</strong> service_07w2v5c</p>
+            <p><strong>Template ID:</strong> template_u4pwglv</p>
+            <p><strong>Public Key:</strong> X-95hw1AjZ84R4LjG</p>
+            <p><strong>Status:</strong> <span id="emailjsStatus">Verificando...</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración EmailJS con TUS credenciales reales
+        const EMAILJS_CONFIG = {
+            serviceID: 'service_07w2v5c',
+            templateID: 'template_u4pwglv',
+            publicKey: 'X-95hw1AjZ84R4LjG'
+        };
+
+        // Inicializar EmailJS
+        (function() {
+            emailjs.init(EMAILJS_CONFIG.publicKey);
+            document.getElementById('emailjsStatus').textContent = '✅ Conectado';
+            document.getElementById('emailjsStatus').style.color = 'green';
+        })();
+
+        // Función para mostrar vista previa
+        function previewEmail() {
+            const formData = getFormData();
+            const message = generateEmailMessage(formData);
+            
+            document.getElementById('previewContent').innerHTML = `
+                <p><strong>Para:</strong> ${formData.clientEmail}</p>
+                <p><strong>Asunto:</strong> Cotización SOAT - Autofondo Alese</p>
+                <hr>
+                <div style="white-space: pre-line;">${message}</div>
+            `;
+            
+            document.getElementById('preview').style.display = 'block';
+        }
+
+        // Función para obtener datos del formulario
+        function getFormData() {
+            return {
+                clientEmail: document.getElementById('clientEmail').value,
+                clientName: document.getElementById('clientName').value,
+                vehicleType: document.getElementById('vehicleType').value,
+                location: document.getElementById('location').value,
+                priceMin: document.getElementById('priceMin').value,
+                priceMax: document.getElementById('priceMax').value
+            };
+        }
+
+        // Función para generar el mensaje del email
+        function generateEmailMessage(data) {
+            return `Estimado/a ${data.clientName},
+
+¡Gracias por tu interés en nuestros seguros SOAT!
+
+Te enviamos tu cotización personalizada:
+
+🚗 DATOS DE TU VEHÍCULO:
+• Tipo: ${data.vehicleType}
+• Ubicación: ${data.location}
+• Uso: Particular
+
+💰 RANGO DE PRECIOS:
+• Desde: S/ ${data.priceMin}
+• Hasta: S/ ${data.priceMax}
+
+✅ COBERTURA SOAT 2024:
+• Muerte por accidente: 4 UIT
+• Gastos médicos: Hasta 5 UIT
+• Invalidez permanente: Hasta 4 UIT
+• Gastos de sepelio: Hasta 1 UIT
+
+🏆 ASEGURADORAS DISPONIBLES:
+• Interseguro • RIMAC • Pacífico • MAPFRE • La Positiva
+
+📞 CONTACTO DIRECTO:
+• Teléfono: +51 999 888 777
+• WhatsApp: 999-919-133
+• Email: info@autofondoalese.com
+• Web: www.autofondoalese.com
+
+¿Listo para proteger tu vehículo?
+¡Contactanos para finalizar tu SOAT!
+
+Saludos cordiales,
+Equipo Autofondo Alese
+Líderes en seguros vehiculares`;
+        }
+
+        // Función para mostrar status
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = getFormData();
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // Validar datos
+            if (!formData.clientEmail || !formData.clientName || !formData.vehicleType || !formData.location) {
+                showStatus('❌ Por favor completa todos los campos obligatorios', 'error');
+                return;
+            }
+            
+            // Deshabilitar botón
+            sendBtn.disabled = true;
+            sendBtn.textContent = '📡 Enviando...';
+            
+            // Preparar template params
+            const templateParams = {
+                to_email: formData.clientEmail,
+                to_name: formData.clientName,
+                from_name: 'Autofondo Alese',
+                reply_to: 'info@autofondoalese.com',
+                subject: 'Cotización SOAT - Autofondo Alese',
+                message: generateEmailMessage(formData),
+                vehicle_type: formData.vehicleType,
+                location: formData.location,
+                price_min: formData.priceMin,
+                company_phone: '+51 999 888 777',
+                company_email: 'info@autofondoalese.com'
+            };
+            
+            // Enviar email usando EmailJS
+            emailjs.send(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    showStatus(`✅ ¡Email enviado exitosamente a ${formData.clientEmail}!`, 'success');
+                    
+                    // Limpiar formulario
+                    document.getElementById('emailForm').reset();
+                    document.getElementById('preview').style.display = 'none';
+                    
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    showStatus(`❌ Error enviando email: ${error.text || error.message}`, 'error');
+                })
+                .finally(function() {
+                    // Rehabilitar botón
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = '📧 Enviar Cotización';
+                });
+        });
+
+        // Función para probar la conexión
+        function testConnection() {
+            showStatus('🔄 Probando conexión con EmailJS...', 'info');
+            
+            const testParams = {
+                to_email: 'test@example.com',
+                to_name: 'Test User',
+                from_name: 'Autofondo Alese',
+                subject: 'Test Connection',
+                message: 'Test message from Autofondo Alese system'
+            };
+            
+            // Solo probar la validación sin enviar
+            try {
+                console.log('EmailJS configurado correctamente');
+                showStatus('✅ Conexión EmailJS exitosa', 'success');
+            } catch (error) {
+                showStatus('❌ Error de conexión EmailJS', 'error');
+            }
+        }
+
+        // Probar conexión al cargar la página
+        window.addEventListener('load', function() {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html> 

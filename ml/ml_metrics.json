@@ -1,0 +1,14 @@
+{
+  "total_interactions": 0,
+  "successful_conversions": 0,
+  "response_effectiveness": {},
+  "user_satisfaction_indicators": {},
+  "api_usage_stats": {
+    "gemini": 0,
+    "claude": 0,
+    "fallback": 0
+  },
+  "average_response_length": 0,
+  "last_learning_update": "2025-06-26 21:21:24.077178",
+  "session_start": "2025-06-26 21:21:24.077188"
+}
