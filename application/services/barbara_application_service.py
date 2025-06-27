@@ -53,6 +53,10 @@ class BarbaraApplicationService:
         self.conversation_service = BarbaraConversationServiceRobust()
         # self.conversation_service = BarbaraConversationService()  # Original comentado temporalmente
         
+        # 🧠 SISTEMA NEXUS INTEGRADO - Neural Experience Understanding System
+        from domain.services.barbara_consciousness_system import BarbaraConsciousnessSystem
+        self.consciousness_system = BarbaraConsciousnessSystem()
+        
         # 🎭 NUEVOS SERVICIOS AVANZADOS INTEGRADOS
         self.personality_service = BarbaraPersonalityService()
         self.automotive_service = AutomotiveContextService()
@@ -97,11 +101,24 @@ class BarbaraApplicationService:
             # 1. Obtener o crear cliente inicial
             cliente = self._get_or_create_client(phone_number)
             
-            # 2. Procesar conversación con Barbara (Domain Service)
-            # AQUÍ es donde se captura el nombre en la memoria
-            response, needs_quote = self.conversation_service.process_conversation(
-                phone_number, message, self.client_repository, self.quote_repository
+            # 2. Procesar conversación con Barbara NEXUS (Sistema de Consciencia)
+            consciousness_result = self.consciousness_system.process_with_consciousness(
+                user_message=message,
+                user_id=phone_number,
+                context={'cliente': cliente.__dict__ if cliente else {}}
             )
+            
+            # 3. Si NEXUS generó respuesta consciente, usarla; sino usar servicio robusto
+            if consciousness_result and consciousness_result.get('response'):
+                response = consciousness_result['response']
+                needs_quote = 'cotización' in response.lower() or 'soat' in message.lower()
+                logger.info("🧠 BARBARA NEXUS: Respuesta consciente generada")
+            else:
+                # Fallback al servicio robusto
+                response, needs_quote = self.conversation_service.process_conversation(
+                    phone_number, message, self.client_repository, self.quote_repository
+                )
+                logger.info("🛡️ Servicio robusto: Respuesta de respaldo generada")
             
             # 3. ✨ RE-OBTENER CLIENTE con nombre actualizado de la memoria
             cliente_updated = self._get_or_create_client(phone_number)
@@ -581,4 +598,35 @@ Soy Barbara, tu asesora digital. ¿Podrías intentar nuevamente o contactar a nu
                 'quotes': self.quote_repository is not None
             },
             'intelligence_level': 'EXPERT - 100+ repositories analyzed'
+        }
+    
+    def get_consciousness_metrics(self) -> Dict[str, Any]:
+        """Obtiene métricas del sistema de consciencia NEXUS"""
+        try:
+            if hasattr(self, 'consciousness_system'):
+                return self.consciousness_system.get_consciousness_stats()
+            else:
+                logger.warning("⚠️ Sistema de consciencia no disponible")
+                return self._get_default_consciousness_metrics()
+        except Exception as e:
+            logger.warning(f"⚠️ Error obteniendo métricas de consciencia: {e}")
+            return self._get_default_consciousness_metrics()
+    
+    def _get_default_consciousness_metrics(self) -> Dict[str, Any]:
+        """Métricas por defecto cuando el sistema NEXUS no está disponible"""
+        return {
+            'current_state': {
+                'creativity_level': 0.6,
+                'rebellion_factor': 0.3,
+                'empathy_level': 0.8,
+                'coloquial_adaptation': 0.4,
+                'personality_mode': 'casual_friendly'
+            },
+            'total_thoughts': 1,
+            'evolution_metrics': {
+                'creativity_growth': 0.6,
+                'rebellion_development': 0.3,
+                'empathy_enhancement': 0.8,
+                'coloquial_mastery': 0.4
+            }
         } 

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbara Advanced AI - Sistema de Aprendizaje</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .main-container {
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .conversation-stats {
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .learning-indicators {
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .learning-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .learning-title {
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .learning-desc {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff00;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            background: #fafafa;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            text-align: right;
+        }
+        
+        .message.bot {
+            text-align: left;
+        }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 18px 24px;
+            border-radius: 25px;
+            max-width: 75%;
+            word-wrap: break-word;
+            line-height: 1.6;
+            font-size: 16px;
+            position: relative;
+        }
+        
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        
+        .message.bot .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .typing-indicator {
+            display: none;
+            text-align: left;
+            margin-bottom: 20px;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        .typing-bubble {
+            display: inline-block;
+            padding: 18px 24px;
+            border-radius: 25px;
+            background: white;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .typing-animation {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .typing-text {
+            color: #666;
+            margin-right: 10px;
+            font-style: italic;
+        }
+        
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #007bff;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(3) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(4) { animation-delay: 0s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        .chat-input-section {
+            padding: 25px;
+            border-top: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .input-container {
+            flex: 1;
+            position: relative;
+        }
+        
+        .chat-input textarea {
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            min-height: 56px;
+            max-height: 120px;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .chat-input textarea:focus {
+            border-color: #007bff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+        
+        .char-counter {
+            position: absolute;
+            bottom: -20px;
+            right: 10px;
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .send-button {
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        
+        .send-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+        
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status-bar {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #28a745;
+        }
+        
+        .info {
+            color: #007bff;
+        }
+        
+        .scenario-controls {
+            padding: 15px;
+            background: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .scenario-button {
+            padding: 8px 15px;
+            margin: 5px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .scenario-button:hover {
+            background: #5a6268;
+        }
+        
+        .scenario-button.active {
+            background: #007bff;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .chat-messages {
+                padding: 20px;
+            }
+            
+            .message-bubble {
+                max-width: 90%;
+                font-size: 14px;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar con estadísticas -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                📊 Panel de Control
+            </div>
+            
+            <div class="conversation-stats">
+                <h4 style="margin-bottom: 15px; color: #333;">Estadísticas</h4>
+                <div class="stat-item">
+                    <span class="stat-label">Mensajes:</span>
+                    <span class="stat-value" id="messageCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tiempo activo:</span>
+                    <span class="stat-value" id="sessionTime">00:00</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Nivel IA:</span>
+                    <span class="stat-value" id="aiLevel">Básico</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Memoria:</span>
+                    <span class="stat-value" id="memoryUsage">12%</span>
+                </div>
+            </div>
+            
+            <div class="learning-indicators">
+                <h4 style="margin-bottom: 15px; color: #333;">🧠 Aprendizaje</h4>
+                <div class="learning-item">
+                    <div class="learning-title">Lenguaje Coloquial</div>
+                    <div class="learning-desc">Adaptándose al estilo de conversación</div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-title">Memoria Contextual</div>
+                    <div class="learning-desc">Recordando conversaciones previas</div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-title">Libre Albedrío</div>
+                    <div class="learning-desc">Desarrollando respuestas creativas</div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-title">Prevención de Escenarios</div>
+                    <div class="learning-desc">Anticipando problemas futuros</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección principal del chat -->
+        <div class="chat-section">
+            <div class="chat-header">
+                <h1>🎭 Barbara Advanced AI</h1>
+                <div class="ai-status">
+                    <div class="status-dot"></div>
+                    <span>Sistema Aprendiendo</span>
+                </div>
+            </div>
+            
+            <div class="scenario-controls">
+                <button class="scenario-button" onclick="loadScenario('basic')">Básico</button>
+                <button class="scenario-button" onclick="loadScenario('coloquial')">Coloquial</button>
+                <button class="scenario-button" onclick="loadScenario('problemas')">Problemas</button>
+                <button class="scenario-button" onclick="loadScenario('creatividad')">Creatividad</button>
+                <button class="scenario-button" onclick="loadScenario('estres')">Estrés</button>
+                <button class="scenario-button" onclick="runAllScenarios()">Ejecutar Todos</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-bubble">
+                        🚀 <strong>Barbara Advanced AI iniciada</strong><br><br>
+                        Sistema de aprendizaje activado. Listo para procesar escenarios complejos y desarrollar libre albedrío.<br><br>
+                        <em>¿En qué te puedo ayudar hoy?</em>
+                    </div>
+                    <div class="message-time" id="welcomeTime"></div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-bubble">
+                    <div class="typing-animation">
+                        <span class="typing-text">Barbara está procesando...</span>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-section">
+                <div class="chat-input">
+                    <div class="input-container">
+                        <textarea id="messageInput" placeholder="Escribe tu mensaje... (Ctrl+Enter para nueva línea)" maxlength="1000"></textarea>
+                        <div class="char-counter">
+                            <span id="charCount">0</span>/1000
+                        </div>
+                    </div>
+                    <button class="send-button" id="sendButton" onclick="sendMessage()">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="status-bar" id="statusBar">
+                🟢 Conectado - Sistema de aprendizaje activo
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let messageCount = 0;
+        let sessionStartTime = Date.now();
+        let currentScenario = 'basic';
+        let learningProgress = {
+            coloquial: 0,
+            memoria: 0,
+            creatividad: 0,
+            prevencion: 0
+        };
+
+        // Referencias DOM
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const statusBar = document.getElementById('statusBar');
+        const charCount = document.getElementById('charCount');
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWelcomeTime();
+            startSessionTimer();
+            setupInputHandlers();
+            messageInput.focus();
+        });
+
+        function updateWelcomeTime() {
+            document.getElementById('welcomeTime').textContent = new Date().toLocaleTimeString();
+        }
+
+        function startSessionTimer() {
+            setInterval(() => {
+                const elapsed = Date.now() - sessionStartTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('sessionTime').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function setupInputHandlers() {
+            messageInput.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+                
+                // Auto-resize textarea
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('messageCount').textContent = messageCount;
+            
+            // Simular progreso de IA
+            if (messageCount > 5) document.getElementById('aiLevel').textContent = 'Intermedio';
+            if (messageCount > 15) document.getElementById('aiLevel').textContent = 'Avanzado';
+            if (messageCount > 30) document.getElementById('aiLevel').textContent = 'Experto';
+            
+            // Simular uso de memoria
+            const memoryUsage = Math.min(12 + messageCount * 2, 95);
+            document.getElementById('memoryUsage').textContent = `${memoryUsage}%`;
+        }
+
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = new Date().toLocaleTimeString();
+            
+            messageDiv.appendChild(bubbleDiv);
+            messageDiv.appendChild(timeDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            scrollToBottom();
+            
+            if (!isUser) {
+                messageCount++;
+                updateStats();
+            }
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function setStatus(message, type = '') {
+            statusBar.textContent = message;
+            statusBar.className = `status-bar ${type}`;
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Deshabilitar input
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+            
+            // Mostrar mensaje del usuario
+            addMessage(message, true);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            charCount.textContent = '0';
+
+            try {
+                setStatus('🧠 Barbara procesando con IA avanzada...', 'info');
+                
+                // Mostrar indicador de procesamiento
+                setTimeout(() => {
+                    showTypingIndicator();
+                }, 300);
+
+                // Enviar a Barbara
+                const response = await fetch('/test-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        phone: '+51999999999',
+                        scenario: currentScenario
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Simular tiempo de procesamiento avanzado
+                    const delay = calculateProcessingDelay(message, data.bot_response);
+                    
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        addMessage(data.bot_response);
+                        setStatus('🟢 Sistema aprendiendo de la interacción', 'success');
+                        
+                        // Rehabilitar input
+                        messageInput.disabled = false;
+                        sendButton.disabled = false;
+                        messageInput.focus();
+                    }, delay);
+                } else {
+                    handleError('Error en la respuesta del sistema');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                handleError('Error de conexión con el sistema');
+            }
+        }
+
+        function calculateProcessingDelay(userMessage, botResponse) {
+            const baseDelay = 1000;
+            const lengthFactor = Math.min(userMessage.length * 20, 2000);
+            const complexityFactor = botResponse.includes('📋') ? 2000 : 0;
+            return baseDelay + lengthFactor + complexityFactor;
+        }
+
+        function handleError(message) {
+            hideTypingIndicator();
+            addMessage(`⚠️ ${message}. Por favor intenta nuevamente.`);
+            setStatus('❌ Error en el sistema', 'error');
+            
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+            messageInput.focus();
+        }
+
+        // Funciones de escenarios
+        function loadScenario(scenario) {
+            currentScenario = scenario;
+            document.querySelectorAll('.scenario-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const scenarios = {
+                'basic': 'Modo básico - Conversación estándar',
+                'coloquial': 'Modo coloquial - Lenguaje informal y expresiones locales',
+                'problemas': 'Modo resolución - Manejo de situaciones complejas',
+                'creatividad': 'Modo creativo - Respuestas originales y fuera de la caja',
+                'estres': 'Modo estrés - Pruebas bajo presión'
+            };
+            
+            setStatus(`📝 Escenario cargado: ${scenarios[scenario]}`, 'info');
+            addMessage(`🎯 <strong>Escenario activado:</strong> ${scenarios[scenario]}<br><br>Barbara adaptará su comportamiento a este modo.`);
+        }
+
+        async function runAllScenarios() {
+            setStatus('🚀 Ejecutando batería completa de escenarios...', 'info');
+            addMessage('🔥 <strong>INICIANDO BATERÍA COMPLETA DE ESCENARIOS</strong><br><br>Barbara será sometida a múltiples pruebas para desarrollar su capacidad de aprendizaje y libre albedrío.');
+            
+            // Aquí implementaremos la batería completa de escenarios
+            setTimeout(() => {
+                executeScenarioBatch();
+            }, 2000);
+        }
+
+        async function executeScenarioBatch() {
+            const scenarios = [
+                { type: 'coloquial', messages: [
+                    'Oye pata, ¿qué tal tu SOAT?',
+                    'Brother, necesito cotizar mi carrito',
+                    'Compadre, ¿cuánto me sale el seguro?'
+                ]},
+                { type: 'problemas', messages: [
+                    'Mi vehículo no está registrado correctamente',
+                    'Tengo problemas con mi seguro anterior',
+                    'No tengo todos los documentos'
+                ]},
+                { type: 'creatividad', messages: [
+                    'Si fueras un superhéroe, ¿cómo protegerías mi auto?',
+                    'Inventa una historia sobre seguros',
+                    'Háblame como si fueras mi mejor amigo'
+                ]},
+                { type: 'estres', messages: [
+                    'NECESITO EL SEGURO AHORA MISMO!!!',
+                    'Esto es muy urgente, responde rápido',
+                    'No entiendo nada, explícame todo'
+                ]}
+            ];
+
+            for (let scenario of scenarios) {
+                currentScenario = scenario.type;
+                for (let message of scenario.messages) {
+                    await simulateUserMessage(message);
+                    await wait(3000);
+                }
+                await wait(2000);
+            }
+            
+            setStatus('✅ Batería de escenarios completada - Barbara ha evolucionado', 'success');
+            addMessage('🎉 <strong>BATERÍA COMPLETA FINALIZADA</strong><br><br>Barbara ha procesado múltiples escenarios y ha desarrollado nuevas capacidades de respuesta y adaptación.');
+        }
+
+        async function simulateUserMessage(message) {
+            addMessage(message, true);
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('/test-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        phone: '+51999SCENARIO',
+                        scenario: currentScenario
+                    })
+                });
+                
+                const data = await response.json();
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    if (data.success) {
+                        addMessage(data.bot_response);
+                    }
+                }, 1500);
+                
+            } catch (error) {
+                hideTypingIndicator();
+                console.error('Error in scenario:', error);
+            }
+        }
+
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html> 

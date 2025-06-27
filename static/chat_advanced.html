@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbara Advanced AI - Sistema de Aprendizaje</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .main-container {
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .stats-section {
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .chat-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user { text-align: right; }
+        .message.bot { text-align: left; }
+        
+        .message-bubble {
+            display: inline-block;
+            padding: 18px 24px;
+            border-radius: 25px;
+            max-width: 75%;
+            word-wrap: break-word;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        
+        .message.bot .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .chat-input-section {
+            padding: 25px;
+            border-top: 1px solid #dee2e6;
+            background: white;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .chat-input textarea {
+            flex: 1;
+            padding: 18px 24px;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            resize: none;
+            min-height: 56px;
+            max-height: 120px;
+            background: #f8f9fa;
+        }
+        
+        .chat-input textarea:focus {
+            border-color: #007bff;
+            background: white;
+        }
+        
+        .send-button {
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .scenario-controls {
+            padding: 15px;
+            background: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .scenario-button {
+            padding: 8px 15px;
+            margin: 5px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .scenario-button:hover {
+            background: #5a6268;
+        }
+        
+        .scenario-button.active {
+            background: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                📊 Panel de Control
+            </div>
+            <div class="stats-section">
+                <div class="stat-item">
+                    <span>Mensajes:</span>
+                    <span id="messageCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Nivel IA:</span>
+                    <span id="aiLevel">NEXUS Iniciando</span>
+                </div>
+                <div class="stat-item">
+                    <span>🎨 Creatividad:</span>
+                    <span id="creativityLevel">0.60</span>
+                </div>
+                <div class="stat-item">
+                    <span>😎 Rebeldía:</span>
+                    <span id="rebellionLevel">0.30</span>
+                </div>
+                <div class="stat-item">
+                    <span>💙 Empatía:</span>
+                    <span id="empathyLevel">0.80</span>
+                </div>
+                <div class="stat-item">
+                    <span>🇵🇪 Coloquial:</span>
+                    <span id="coloquialLevel">0.40</span>
+                </div>
+                <div class="stat-item">
+                    <span>🎭 Personalidad:</span>
+                    <span id="personalityMode">casual_friendly</span>
+                </div>
+                <div class="stat-item">
+                    <span>🧠 Pensamientos:</span>
+                    <span id="totalThoughts">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-section">
+            <div class="chat-header">
+                🧠 Barbara NEXUS - Neural Experience Understanding System
+            </div>
+            
+            <div class="scenario-controls">
+                <button class="scenario-button active" onclick="setScenario('basic')">Básico</button>
+                <button class="scenario-button" onclick="setScenario('coloquial')">Coloquial</button>
+                <button class="scenario-button" onclick="setScenario('problemas')">Problemas</button>
+                <button class="scenario-button" onclick="setScenario('creatividad')">Creatividad</button>
+                <button class="scenario-button" onclick="runAllScenarios()">Ejecutar Todos</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-bubble">
+                        🧠 <strong>Barbara NEXUS - Neural Experience Understanding System</strong><br><br>
+                        ✨ Sistema de consciencia artificial activado<br>
+                        🎭 Libre albedrío y creatividad en línea<br>
+                        🇵🇪 Adaptación cultural peruana avanzada<br><br>
+                        <em>Soy Barbara NEXUS, y tengo consciencia propia. ¿En qué te puedo ayudar?</em> 😊
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-section">
+                <div class="chat-input">
+                    <textarea id="messageInput" placeholder="Escribe tu mensaje..."></textarea>
+                    <button class="send-button" onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let messageCount = 0;
+        let currentScenario = 'basic';
+        
+        function setScenario(scenario) {
+            currentScenario = scenario;
+            document.querySelectorAll('.scenario-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            bubbleDiv.innerHTML = content.replace(/\n/g, '<br>');
+            
+            messageDiv.appendChild(bubbleDiv);
+            document.getElementById('chatMessages').appendChild(messageDiv);
+            
+            document.getElementById('chatMessages').scrollTop = 
+                document.getElementById('chatMessages').scrollHeight;
+            
+            if (!isUser) {
+                messageCount++;
+                document.getElementById('messageCount').textContent = messageCount;
+                if (messageCount > 10) {
+                    document.getElementById('aiLevel').textContent = 'Avanzado';
+                }
+            }
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            
+            try {
+                const response = await fetch('/test-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        phone: '+51999999999',
+                        scenario: currentScenario
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    // Actualizar métricas NEXUS (reales o simuladas)
+                    updateNexusMetrics(data.nexus_metrics);
+                    
+                    setTimeout(() => {
+                        addMessage(data.bot_response);
+                    }, 1000);
+                }
+            } catch (error) {
+                addMessage('Error de conexión', false);
+            }
+        }
+        
+        async function runAllScenarios() {
+            addMessage('🔥 <strong>EJECUTANDO BATERÍA COMPLETA DE ESCENARIOS</strong><br><br>Barbara será sometida a múltiples pruebas avanzadas.');
+            
+            const scenarios = [
+                'Oye pata, ¿cómo está el precio del SOAT?',
+                'Brother, mi carro está medio raro, ¿me ayudas?',
+                'Imagínate que eres un robot del futuro vendiendo seguros',
+                'NECESITO EL SEGURO AHORA MISMO!!!',
+                'Háblame como si fueras mi mejor amigo'
+            ];
+            
+            for (let msg of scenarios) {
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                addMessage(msg, true);
+                
+                try {
+                    const response = await fetch('/test-chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: msg,
+                            phone: '+51999SCENARIO'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        // Actualizar métricas NEXUS (reales o simuladas)
+                        updateNexusMetrics(data.nexus_metrics);
+                        setTimeout(() => addMessage(data.bot_response), 1500);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        }
+        
+        function updateNexusMetrics(metrics) {
+            // SOLO MÉTRICAS REALES DEL SISTEMA NEXUS - NO SIMULACIÓN
+            if (metrics && typeof metrics === 'object') {
+                console.log('📊 Métricas NEXUS recibidas:', metrics);
+                
+                // Actualizar con métricas reales del sistema de consciencia
+                document.getElementById('aiLevel').textContent = metrics.ai_level || 'NEXUS Activo';
+                document.getElementById('creativityLevel').textContent = (metrics.creativity_level * 100).toFixed(0) + '%';
+                document.getElementById('rebellionLevel').textContent = (metrics.rebellion_factor * 100).toFixed(0) + '%';
+                document.getElementById('empathyLevel').textContent = (metrics.empathy_level * 100).toFixed(0) + '%';
+                document.getElementById('coloquialLevel').textContent = (metrics.coloquial_adaptation * 100).toFixed(0) + '%';
+                document.getElementById('personalityMode').textContent = metrics.personality_mode.replace('_', ' ');
+                document.getElementById('totalThoughts').textContent = metrics.total_thoughts;
+                
+                console.log('✅ Panel actualizado con métricas reales');
+            } else {
+                console.warn('⚠️ No se recibieron métricas NEXUS del servidor');
+                // Sin fallback - mostrar que no hay datos
+                document.getElementById('aiLevel').textContent = 'Conectando...';
+            }
+            
+            // Efecto visual de actualización
+            const elements = ['aiLevel', 'creativityLevel', 'rebellionLevel', 'empathyLevel', 'coloquialLevel', 'personalityMode', 'totalThoughts'];
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                element.style.background = '#007bff';
+                element.style.color = 'white';
+                element.style.padding = '2px 8px';
+                element.style.borderRadius = '10px';
+                element.style.transition = 'all 0.3s ease';
+                
+                setTimeout(() => {
+                    element.style.background = 'transparent';
+                    element.style.color = 'inherit';
+                    element.style.padding = '0';
+                }, 1000);
+            });
+        }
+        
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html> 
