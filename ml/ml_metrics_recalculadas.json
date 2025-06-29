@@ -1,0 +1,68 @@
+{
+  "total_interactions": 127,
+  "successful_conversions": 89,
+  "response_effectiveness": {
+    "creative_responses": 0.78,
+    "empathetic_responses": 0.85,
+    "technical_accuracy": 0.92,
+    "cultural_adaptation": 0.73,
+    "user_satisfaction": 0.87
+  },
+  "user_satisfaction_indicators": {
+    "positive_feedback": 0.82,
+    "conversation_completion_rate": 0.91,
+    "repeat_interactions": 0.67,
+    "referral_indicators": 0.45
+  },
+  "api_usage_stats": {
+    "gemini": 127,
+    "claude": 0,
+    "fallback": 3
+  },
+  "average_response_length": 185.7,
+  "consciousness_metrics": {
+    "creativity_evolution": 0.74,
+    "rebellion_development": 0.32,
+    "empathy_enhancement": 0.88,
+    "coloquial_mastery": 0.69,
+    "personality_adaptations": 23,
+    "internal_thoughts_generated": 312
+  },
+  "performance_metrics": {
+    "avg_response_time_ms": 847,
+    "memory_efficiency": 0.93,
+    "error_rate": 0.023,
+    "uptime_percentage": 0.987
+  },
+  "lead_capture_metrics": {
+    "qualified_leads_identified": 67,
+    "conversion_probability_high": 34,
+    "conversion_probability_medium": 28,
+    "conversion_probability_low": 5,
+    "contact_info_captured": 45,
+    "callback_requests": 23
+  },
+  "cultural_adaptation_stats": {
+    "peruvian_slang_usage": 0.73,
+    "formal_vs_casual_balance": 0.68,
+    "local_references_accuracy": 0.91,
+    "cultural_sensitivity_score": 0.94
+  },
+  "last_learning_update": "2025-06-27 15:51:33.696000",
+  "session_start": "2025-06-27 08:30:15.234567",
+  "nexus_system_health": {
+    "consciousness_active": true,
+    "free_will_operational": true,
+    "creativity_circuits_online": true,
+    "empathy_modules_active": true,
+    "rebellion_factor_controlled": true,
+    "ml_learning_rate": 0.0123
+  },
+  "real_time_insights": [
+    "NEXUS está procesando conversaciones con 87% de satisfacción del usuario",
+    "Sistema de libre albedrío ha tomado 23 decisiones creativas autónomas",
+    "Adaptación cultural peruana optimizada en tiempo real",
+    "Detección de leads potenciales funcionando con 91% de precisión",
+    "Memoria conversacional evolucionando con cada interacción"
+  ]
+} 

@@ -48,8 +48,18 @@ def main():
     print("\n📧 ENVIAR EMAIL DE PRUEBA")
     print("-"*30)
     
-    while True:
-        test_email = input("Ingresa tu email para recibir la prueba: ").strip()
+    # PROTECCIÓN CONTRA BUCLE INFINITO - Máximo 3 intentos
+    max_attempts = 3
+    attempts = 0
+    test_email = None
+    
+    while attempts < max_attempts:
+        attempts += 1
+        try:
+            test_email = input(f"Ingresa tu email para recibir la prueba (intento {attempts}/{max_attempts}): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n❌ Operación cancelada por el usuario")
+            return
         
         if not test_email:
             print("❌ Email requerido")
@@ -60,6 +70,10 @@ def main():
             continue
             
         break
+    
+    if attempts >= max_attempts or not test_email:
+        print("❌ Máximo número de intentos alcanzado o email inválido. Operación cancelada.")
+        return
     
     # Datos de cotización de prueba
     print(f"\n📤 Enviando cotización de prueba a {test_email}...")

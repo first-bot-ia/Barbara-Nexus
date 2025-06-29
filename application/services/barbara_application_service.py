@@ -124,14 +124,16 @@ class BarbaraApplicationService:
             cliente_updated = self._get_or_create_client(phone_number)
             logger.info(f"🔄 Cliente actualizado: {cliente_updated.nombre if cliente_updated else 'None'}")
             
-            # 4. 🚀 ANÁLISIS AVANZADO CON NUEVOS SERVICIOS (TEMPORALMENTE DESHABILITADO)
-            # El enhanced response está causando bucles infinitos - DESHABILITADO hasta nueva orden
-            # enhanced_response = self._generate_enhanced_ai_response(message, phone_number, cliente_updated, response)
-            # if enhanced_response:
-            #     response = enhanced_response
+            # 4. 🚀 ANÁLISIS AVANZADO REACTIVADO CON CONTROL DE SEGURIDAD
+            # Enhanced response REACTIVADO pero con protecciones anti-bucle
+            if not self._is_basic_conversational_flow(response):
+                enhanced_response = self._generate_enhanced_ai_response_safe(message, phone_number, cliente_updated, response)
+                if enhanced_response and enhanced_response != response:
+                    response = enhanced_response
+                    logger.info("🚀 Enhanced response aplicada de forma segura")
             
-            # ✅ SOLO USAR EL SERVICIO ROBUSTO - SIN INTERFERENCIAS
-            logger.info("✅ Usando SOLO servicio robusto - Sin enhanced response que cause bucles")
+            # ✅ INTEGRACIÓN INTELIGENTE: NEXUS + ENHANCED RESPONSE CONTROLADO
+            logger.info("✅ Sistema híbrido: NEXUS + Enhanced Response con protecciones")
             
             # 5. ✅ GENERACIÓN DE COTIZACIONES DESHABILITADA TEMPORALMENTE
             # Solo generar si el servicio robusto específicamente lo genera
@@ -629,4 +631,105 @@ Soy Barbara, tu asesora digital. ¿Podrías intentar nuevamente o contactar a nu
                 'empathy_enhancement': 0.8,
                 'coloquial_mastery': 0.4
             }
-        } 
+        }
+    
+    def _is_basic_conversational_flow(self, response: str) -> bool:
+        """Detecta si la respuesta es parte del flujo conversacional básico paso a paso"""
+        flow_indicators = [
+            'cómo te llamas', 'tu nombre', 'qué tipo de vehículo',
+            'de qué año', 'uso principal', 'qué ciudad', 'correo electrónico',
+            'particular, trabajo', 'auto, moto, taxi', 'lima, arequipa'
+        ]
+        
+        response_lower = response.lower()
+        return any(indicator in response_lower for indicator in flow_indicators)
+    
+    def _generate_enhanced_ai_response_safe(self, 
+                                          message: str, 
+                                          phone_number: str,
+                                          cliente: Optional[Cliente],
+                                          current_response: str) -> Optional[str]:
+        """Genera respuesta mejorada con IA de forma segura - ANTI-BUCLES"""
+        
+        try:
+            # 🛡️ PROTECCIONES ANTI-BUCLE
+            
+            # No mejorar si ya es una respuesta específica del flujo
+            if self._is_basic_conversational_flow(current_response):
+                return None
+            
+            # No mejorar si es muy corta (probablemente ya está bien)
+            if len(current_response) < 50:
+                return None
+            
+            # No mejorar respuestas que ya tienen preguntas específicas
+            if any(q in current_response.lower() for q in ['?', '¿', 'dime', 'cuál', 'qué', 'cómo']):
+                return None
+            
+            # 🎯 CASOS ESPECÍFICOS PARA ENHANCED RESPONSE
+            
+            # Solo mejorar respuestas genéricas o informativas
+            if any(generic in current_response.lower() for generic in [
+                'puedo ayudarte', 'información', 'disponible', 'servicio'
+            ]):
+                
+                # Construir contexto específico
+                context = self._build_enhanced_context_safe(phone_number, cliente, message)
+                
+                # Generar con Gemini de forma controlada
+                enhanced = self.gemini_service.generate_response(
+                    message=message,
+                    conversation_context=context
+                )
+                
+                if enhanced and len(enhanced) > 20 and enhanced != current_response:
+                    # Verificar que no sea repetitiva
+                    if not self._is_repetitive_response(enhanced, current_response):
+                        logger.info("🎨 Enhanced response generada exitosamente")
+                        return enhanced
+            
+        except Exception as e:
+            logger.warning(f"⚠️ Error en enhanced response (modo seguro): {e}")
+        
+        return None
+    
+    def _build_enhanced_context_safe(self, 
+                                   phone_number: str,
+                                   cliente: Optional[Cliente], 
+                                   message: str) -> str:
+        """Construye contexto mejorado de forma segura"""
+        
+        client_info = f"Cliente: {cliente.nombre}" if cliente and cliente.nombre else "Cliente nuevo"
+        
+        # Contexto minimalista para evitar bucles
+        context = f"""
+CONTEXTO BARBARA - RESPUESTA RÁPIDA:
+
+{client_info}
+Mensaje actual: "{message}"
+
+INSTRUCCIONES:
+- Respuesta corta, directa y útil
+- Si no tienes información específica, deriva al asesor: +51 999 888 777
+- NO hagas preguntas si ya hay un flujo conversacional activo
+- Mantén tono amigable pero profesional
+- Precios SOAT: Auto S/140-180, Moto S/90-130, Taxi S/220-280
+
+Genera una respuesta concisa y útil.
+"""
+        
+        return context
+    
+    def _is_repetitive_response(self, new_response: str, current_response: str) -> bool:
+        """Detecta si la nueva respuesta es muy similar a la actual"""
+        
+        # Convertir a minúsculas y obtener palabras clave
+        new_words = set(new_response.lower().split())
+        current_words = set(current_response.lower().split())
+        
+        # Si más del 70% de palabras son iguales, es repetitiva
+        if len(new_words) > 0:
+            similarity = len(new_words.intersection(current_words)) / len(new_words)
+            return similarity > 0.7
+        
+        return False 

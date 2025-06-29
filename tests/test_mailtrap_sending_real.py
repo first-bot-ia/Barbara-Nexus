@@ -56,8 +56,17 @@ def main():
     print("-"*40)
     print("⚠️  IMPORTANTE: Este email se enviará REALMENTE")
     
-    while True:
-        test_email = input("Ingresa tu email para recibir la cotización real: ").strip()
+    # PROTECCIÓN CONTRA BUCLE INFINITO - Máximo 3 intentos
+    max_attempts = 3
+    attempts = 0
+    
+    while attempts < max_attempts:
+        attempts += 1
+        try:
+            test_email = input(f"Ingresa tu email para recibir la cotización real (intento {attempts}/{max_attempts}): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n❌ Operación cancelada por el usuario")
+            return
         
         if not test_email:
             print("❌ Email requerido")
@@ -68,8 +77,12 @@ def main():
             continue
         
         # Confirmar envío
-        print(f"\n⚠️  ¿Confirmas enviar email REAL a {test_email}? (s/n): ", end="")
-        confirm = input().strip().lower()
+        try:
+            print(f"\n⚠️  ¿Confirmas enviar email REAL a {test_email}? (s/n): ", end="")
+            confirm = input().strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print("\n❌ Operación cancelada por el usuario")
+            return
         
         if confirm in ['s', 'si', 'sí', 'y', 'yes']:
             break
@@ -78,6 +91,10 @@ def main():
             return
         else:
             print("❌ Respuesta inválida. Usa 's' para sí o 'n' para no")
+    
+    if attempts >= max_attempts:
+        print("❌ Máximo número de intentos alcanzado. Operación cancelada.")
+        return
     
     # Datos de cotización REAL de prueba
     print(f"\n📤 Enviando cotización REAL a {test_email}...")

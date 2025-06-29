@@ -315,8 +315,17 @@ def main():
     
     show_email_options()
     
-    while True:
-        choice = input("Elige una opción (1-5): ").strip()
+    # PROTECCIÓN CONTRA BUCLE INFINITO - Máximo 5 intentos
+    max_attempts = 5
+    attempts = 0
+    
+    while attempts < max_attempts:
+        attempts += 1
+        try:
+            choice = input(f"Elige una opción (1-5) - Intento {attempts}/{max_attempts}: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n❌ Operación cancelada por el usuario")
+            break
         
         if choice == "1":
             if test_mailtrap_api():
@@ -353,6 +362,10 @@ def main():
             
         else:
             print("❌ Opción inválida. Elige 1, 2, 3, 4 o 5")
+    
+    if attempts >= max_attempts:
+        print("\n❌ Máximo número de intentos alcanzado. Configuración cancelada.")
+        print("💡 Ejecuta nuevamente el script cuando estés listo para configurar.")
     
     print("\n" + "="*50)
     print("✅ Configuración completada")
