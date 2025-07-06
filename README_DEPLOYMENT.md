@@ -20,13 +20,29 @@ Asegúrate de tener estos archivos en tu repositorio:
    - Nombre: `barbara-bonofacil-chatbot`
    - Runtime: Python 3
    - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn chatbot_dinamico:app --bind 0.0.0.0:$PORT`
+   - Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
 
 ### 3. Variables de Entorno
 
 En Render, configura estas variables de entorno:
-- `GEMINI_API_KEY`: Tu clave de API de Google Gemini
-- `PYTHON_VERSION`: 3.9.16
+
+#### Variables Requeridas:
+- `GEMINI_API_KEY`: Tu clave de API de Google Gemini (obligatoria)
+
+#### Variables Opcionales:
+- `PYTHON_VERSION`: 3.9.16 (por defecto)
+- `PORT`: Puerto del servidor (Render asigna automáticamente)
+
+#### Cómo configurar en Render:
+1. Ve a tu dashboard de Render
+2. Selecciona tu servicio web
+3. Ve a la pestaña "Environment"
+4. Agrega la variable `GEMINI_API_KEY` con tu API key de Gemini
+
+#### Obtener API Key de Gemini:
+1. Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Crea una nueva API key
+3. Copia la key y configúrala en Render
 
 ### 4. Despliegue
 

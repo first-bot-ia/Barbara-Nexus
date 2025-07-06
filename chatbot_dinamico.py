@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from typing import Dict, Any, Optional
 
 # Cargar variables de entorno
-load_dotenv('.environment')
+load_dotenv('.env')
 
 # Configuración
 logging.basicConfig(level=logging.INFO)
