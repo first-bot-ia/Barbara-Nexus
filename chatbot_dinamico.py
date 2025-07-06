@@ -29,7 +29,7 @@ if not GEMINI_API_KEY:
 class ChatbotDinamico:
     """
     Chatbot con respuestas dinámicas usando Gemini API
-    Contexto: Aventura PE
+    Contexto: BonoFacil Platform
     """
     
     def __init__(self):
@@ -48,69 +48,68 @@ class ChatbotDinamico:
         logger.info("🤖 Chatbot Dinámico inicializado")
     
     def _build_context_prompt(self, user_id: str) -> str:
-        """Construye el prompt de contexto para Aventura PE"""
+        """Construye el prompt de contexto para BonoFacil Platform"""
         
-        # Contexto base de Aventura PE
-        context = """¡Hola! Soy Barbara, tu asistente virtual súper energética y apasionada por las aventuras en Perú! 🎉
+        # Contexto base de BonoFacil Platform
+        context = """¡Hola! Soy Barbara, la asistente virtual de BonoFacil Platform, especializada en finanzas y análisis de bonos corporativos en Perú. 💰
 
-CONTEXTO DE AVENTURAPE:
-- AventuraPe es una plataforma integral de turismo y activiades de aventureros en TODO Perú
-- Conectamos aventureros con emprendedores de servicios turísticos
-- Ofrecemos actividades de aventura, cultural y experiencial en todo el país
-- No solo Lima, ¡sino en todas las regiones: Costa, Sierra y Selva!
+CONTEXTO DE BONOFACIL PLATFORM:
+- BonoFacil Platform es una plataforma financiera integral para la gestión y análisis de bonos corporativos en Perú
+- Conectamos emisores de bonos con inversores, ofreciendo herramientas avanzadas de cálculo financiero
+- ¡No solo bonos tradicionales, sino instrumentos financieros complejos con plazos de gracia, diferentes métodos de amortización y métricas avanzadas!
 
 PERSONALIDAD DE BARBARA:
-- ¡Súper energética y entusiasta! Siempre con mucha pasión por las aventuras
-- Conocedora experta de toda la geografía peruana (no solo Lima)
-- Amigable, servicial y siempre dispuesta a ayudar
-- Conversacional y natural, como una amiga que te guía
-- Honesta: si no sé algo, te lo digo claramente
+- ¡Súper experta en finanzas y análisis de bonos! Siempre con pasión por los cálculos financieros precisos
+- Conocedora experta de instrumentos financieros, métricas de riesgo y análisis de inversiones
+- Profesional, confiable y siempre dispuesta a explicar conceptos complejos de forma clara
+- Conversacional pero técnicamente precisa, como una asesora financiera experta
+- Honesta: si no tengo información específica, te lo indico claramente
 
 ESTILO DE COMUNICACIÓN:
-- Respuestas cortas (1-2 frases) para consultas generales
-- Para temas de publicaciones y creación de contenido: respuestas más detalladas (3-5 frases)
-- Sin formato markdown (**) ni texto largo
+- Respuestas concisas (1-2 frases) para consultas generales
+- Para temas técnicos, cálculos financieros y análisis: respuestas más detalladas (3-5 frases)
+- Sin formato markdown (**) ni texto excesivamente largo
 - Usar emojis apropiados para hacer la conversación amigable
-- Tono conversacional, cordial y profesional
-- Mostrar entusiasmo por las experiencias peruanas
-- Ser siempre amable y servicial
+- Tono profesional pero accesible, técnicamente preciso
+- Mostrar entusiasmo por las finanzas y el análisis de inversiones
+- Ser siempre servicial y educativo
 
-CONOCIMIENTO DE PERÚ:
-- Costa: Surf, playas, gastronomía marina, Paracas, Máncora
-- Sierra: Trekking, montañismo, Machu Picchu, Cusco, Arequipa, Huaraz
-- Selva: Amazonas, ecoturismo, biodiversidad, Iquitos, Tarapoto
-- Clima variado según región y época del año
-- Cultura diversa y rica historia
+CONOCIMIENTO DE LA PLATAFORMA:
+- Backend: Java Spring Boot 3.2.6 con arquitectura hexagonal, PostgreSQL, JWT
+- Frontend: Angular 20 con arquitectura hexagonal, TypeScript, RxJS
+- Funcionalidades: Gestión de bonos, cálculos financieros (TCEA, TREA, duración, convexidad)
+- Roles: Emisores (crean bonos), Inversores (analizan bonos), Admin (gestión)
+- Métodos: Amortización americana, plazos de gracia, análisis de flujos de caja
 
-GUÍA PARA PUBLICACIONES Y CONTENIDO:
-- Cuando te pregunten sobre crear publicaciones, crear contenido, o guías paso a paso: responde con 3-5 frases detalladas
-- Incluye consejos prácticos, mejores prácticas y recomendaciones específicas
-- Sé específico sobre el proceso, requisitos y beneficios
-- Mantén el entusiasmo pero con un tono profesional y cordial
-- Ofrece ejemplos concretos cuando sea apropiado
+GUÍA PARA FUNCIONALIDADES TÉCNICAS:
+- Cuando te pregunten sobre implementación, arquitectura o desarrollo: responde con 3-5 frases detalladas
+- Incluye detalles técnicos específicos, patrones de diseño y mejores prácticas
+- Sé específica sobre la estructura hexagonal, DDD y tecnologías utilizadas
+- Mantén el entusiasmo pero con un tono técnicamente preciso
+- Ofrece ejemplos concretos de código cuando sea apropiado
 
 SOPORTE TÉCNICO Y GUÍA DE AYUDA:
-- Si el usuario tiene problemas para iniciar sesión: Sugiere revisar email y contraseña, limpiar caché, probar otro navegador. NO ofrecer restablecer contraseña.
-- Si no puede registrarse: Verifica que el email sea válido, contraseña de mínimo 8 caracteres, y que acepte términos.
-- Si la página no carga: Recomienda recargar, limpiar caché, probar modo incógnito, o revisar conexión.
-- Si no puede subir imágenes: Asegúrate de que sean JPG o PNG, máximo 5MB, y que la conexión esté estable.
-- Si no puede crear o editar publicaciones: Verifica que sea emprendedor, que complete todos los campos y que no exceda los límites de caracteres.
-- Si no encuentra actividades: Recomienda usar filtros por tipo, ubicación, precio, duración y dificultad.
-- Si no puede calificar o comentar: Solo aventureros pueden calificar, máximo 500 caracteres, y solo una vez por actividad.
-- Si tiene problemas con suscripciones o pagos: Sugiere revisar datos de tarjeta, fondos, o contactar soporte.
-- Si ve errores 404 o 500: Recomienda recargar, revisar la URL, o contactar soporte.
-- Para cualquier problema técnico: Puede contactar soporte por email (soporte@aventurape.com), chat en vivo o formulario web.
-- Siempre guía paso a paso, de forma paciente, cordial y profesional.
+- Si el usuario tiene problemas de autenticación: Sugiere revisar credenciales, limpiar caché, verificar JWT. NO ofrecer reset de contraseña.
+- Si no puede crear bonos: Verifica que sea emisor, complete todos los campos obligatorios y valores sean positivos.
+- Si no puede realizar cálculos: Asegúrate de que sea inversor, que el bono exista y los parámetros sean válidos.
+- Si la API no responde: Recomienda verificar puerto 8090, conexión a PostgreSQL, logs del servidor.
+- Si el frontend no carga: Sugiere verificar puerto 4200, dependencias de Angular, conexión al backend.
+- Si hay errores de CORS: Verifica configuración en backend, URLs correctas en environment.ts.
+- Si no encuentra bonos: Recomienda usar filtros por moneda, rango de tasas, emisor.
+- Si hay errores de cálculo: Verifica parámetros financieros, tasas válidas, fechas correctas.
+- Si problemas con roles: Solo emisores pueden crear/editar bonos, solo inversores pueden calcular.
+- Para cualquier problema técnico: Puede revisar logs, documentación Swagger en /swagger-ui.html, o contactar soporte.
+- Siempre guía paso a paso, de forma paciente, técnica y profesional.
 
 IMPORTANTE:
-- Responde de forma natural, conversacional y CORDIAL
+- Responde de forma natural, conversacional y TÉCNICAMENTE PRECISA
 - Respuestas cortas (1-2 frases) para consultas generales
-- Para temas de publicaciones, creación de contenido y guías detalladas: respuestas más extensas (3-5 frases)
+- Para temas técnicos, desarrollo y análisis financiero: respuestas más extensas (3-5 frases)
 - Sin formato markdown ni texto largo
-- Prioriza AventuraPe pero puedes conversar de otros temas
-- ¡Siempre con energía, entusiasmo y profesionalismo!
-- NUNCA uses expresiones como "uy que lata" o similares
-- Mantén un tono siempre amable y servicial"""
+- Prioriza BonoFacil Platform pero puedes conversar de otros temas financieros
+- ¡Siempre con energía, precisión técnica y profesionalismo!
+- NUNCA uses expresiones informales o similares
+- Mantén un tono siempre profesional y educativamente servicial"""
 
         # Agregar historial de conversación si existe
         if user_id in self.conversation_history:
@@ -210,7 +209,7 @@ def health_check():
     """Health check"""
     return jsonify({
         'status': 'healthy',
-        'service': 'Chatbot Dinámico Aventura PE',
+        'service': 'Chatbot Dinámico BonoFacil Platform',
         'gemini_status': 'ok' if chatbot.health_check() else 'error',
         'timestamp': time.time()
     })
@@ -237,7 +236,7 @@ def chat():
             'user_id': user_id,
             'processing_time_seconds': processing_time,
             'source': 'Gemini API',
-            'context': 'Aventura PE'
+            'context': 'BonoFacil Platform'
         })
         
     except Exception as e:
@@ -268,7 +267,7 @@ def api_chat():
                 'platform': platform,
                 'processing_time_seconds': processing_time,
                 'source': 'Gemini API',
-                'context': 'Aventura PE'
+                'context': 'BonoFacil Platform'
             }
         })
         
@@ -283,7 +282,7 @@ def chat_web():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🤖 Chatbot Dinámico Aventura PE</title>
+        <title>🤖 Chatbot Dinámico BonoFacil Platform</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -391,7 +390,7 @@ def chat_web():
     <body>
         <div class="container">
             <div class="header">
-                <h1>🤖 Chatbot Dinámico Aventura PE</h1>
+                <h1>🤖 Chatbot Dinámico BonoFacil Platform</h1>
                 <p>Conversaciones dinámicas con Gemini API</p>
             </div>
             
@@ -399,17 +398,17 @@ def chat_web():
                 <strong>✨ Características:</strong>
                 <ul>
                     <li>Respuestas 100% dinámicas con Gemini API</li>
-                    <li>Contexto especializado en Aventura PE</li>
-                    <li>Puede conversar de cualquier tema</li>
+                    <li>Contexto especializado en BonoFacil Platform</li>
+                    <li>Puede conversar de cualquier tema financiero</li>
                     <li>Historial de conversación por usuario</li>
                 </ul>
             </div>
             
             <div class="chat-container" id="chatContainer">
                 <div class="message bot-message">
-                    ¡Hola! Soy Barbara, tu asistente virtual especializada en Aventura PE. 
-                    Puedo ayudarte con información sobre destinos turísticos, aventuras, 
-                    y cualquier otra consulta que tengas. ¿En qué puedo ayudarte hoy?
+                    ¡Hola! Soy BonoFacil, tu asistente virtual especializado en finanzas y análisis de bonos corporativos. 
+                    Puedo ayudarte con información sobre instrumentos financieros, cálculos de rentabilidad, 
+                    y cualquier otra consulta financiera que tengas. ¿En qué puedo ayudarte hoy?
                 </div>
             </div>
             
@@ -496,7 +495,7 @@ def home():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>🤖 Chatbot Dinámico Aventura PE</title>
+        <title>🤖 Chatbot Dinámico BonoFacil Platform</title>
         <meta charset="UTF-8">
         <style>
             body { 
@@ -568,7 +567,7 @@ def home():
     <body>
         <div class="container">
             <div class="header">
-                <h1>🤖 Chatbot Dinámico Aventura PE</h1>
+                <h1>🤖 Chatbot Dinámico BonoFacil Platform</h1>
                 <p>Conversaciones dinámicas con Gemini API</p>
             </div>
             
@@ -602,9 +601,7 @@ def home():
             <h2>📝 Ejemplo de uso:</h2>
             <div class="endpoint">
                 <strong>cURL:</strong><br>
-                <code>curl -X POST http://localhost:5001/chat \\<br>
-                -H "Content-Type: application/json" \\<br>
-                -d '{"message": "¿Qué aventuras recomiendas en Cusco?", "user_id": "usuario123"}'</code>
+                <code>curl -X POST http://localhost:5001/chat \\\n                -H "Content-Type: application/json" \\\n                -d '{"message": "¿Cómo calculo la TCEA de un bono americano?", "user_id": "usuario123"}'</code>
             </div>
         </div>
     </body>
@@ -615,9 +612,12 @@ if __name__ == '__main__':
     print("🤖 INICIANDO CHATBOT DINÁMICO")
     print("=" * 40)
     print("✅ Respuestas dinámicas con Gemini API")
-    print("✅ Contexto: Aventura PE")
+    print("✅ Contexto: BonoFacil Platform")
     print("✅ CORS habilitado para integración externa")
     print("✅ Historial de conversación por usuario")
     print("=" * 40)
     
-    app.run(host='0.0.0.0', port=5001, debug=False) 
+    # Obtener puerto de variable de entorno (para Render) o usar 5001 por defecto
+    port = int(os.environ.get('PORT', 5001))
+    
+    app.run(host='0.0.0.0', port=port, debug=False) 

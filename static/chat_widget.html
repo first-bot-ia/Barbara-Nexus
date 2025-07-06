@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbara - Chat Widget</title>
+    <style>
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .barbara-message {
+            background: white;
+            border: 1px solid #e9ecef;
+            color: #333;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .send-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1001;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .typing-indicator {
+            padding: 10px 15px;
+            color: #666;
+            font-style: italic;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón para abrir el chat -->
+    <button class="chat-toggle" onclick="toggleChat()" id="chatToggle">
+        💬
+    </button>
+
+    <!-- Widget de chat -->
+    <div class="chat-widget hidden" id="chatWidget">
+        <div class="chat-header">
+            <h3>🤖 Barbara - BonoFacil</h3>
+            <button class="close-btn" onclick="toggleChat()">×</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message barbara-message">
+                ¡Hola! Soy Barbara, la asistente virtual de BonoFacil Platform. ¿En qué puedo ayudarte hoy con tus consultas financieras? 💰
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" class="message-input" id="messageInput" 
+                   placeholder="Escribe tu mensaje..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // Configuración - Cambia esta URL por la de tu chatbot en Render
+        const CHATBOT_URL = 'https://tu-app.onrender.com/chat';
+        
+        let isChatOpen = false;
+        let userId = 'web_widget_' + Math.random().toString(36).substr(2, 9);
+
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            const toggle = document.getElementById('chatToggle');
+            
+            isChatOpen = !isChatOpen;
+            
+            if (isChatOpen) {
+                widget.classList.remove('hidden');
+                toggle.classList.add('hidden');
+            } else {
+                widget.classList.add('hidden');
+                toggle.classList.remove('hidden');
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'barbara-message'}`;
+            messageDiv.textContent = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.textContent = 'Barbara está escribiendo...';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Agregar mensaje del usuario
+            addMessage(message, true);
+            input.value = '';
+            
+            // Mostrar indicador de escritura
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch(CHATBOT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        user_id: userId
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Ocultar indicador de escritura
+                hideTypingIndicator();
+                
+                if (data.success) {
+                    addMessage(data.response);
+                } else {
+                    addMessage('Lo siento, tuve un problema técnico. ¿Podrías intentar nuevamente?');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                hideTypingIndicator();
+                addMessage('Error de conexión. Por favor, verifica tu conexión a internet.');
+            }
+        }
+
+        // Función para integrar en otros sitios web
+        window.BarbaraChat = {
+            open: toggleChat,
+            sendMessage: sendMessage,
+            setUserId: function(id) {
+                userId = id;
+            }
+        };
+    </script>
+</body>
+</html> 
