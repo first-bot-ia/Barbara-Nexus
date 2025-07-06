@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbara Adaptive Chat - Sistema Adaptativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .platform-selector {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        .platform-selector label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .platform-selector select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.barbara {
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.barbara .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .message.barbara .message-avatar {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .message-info {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .adaptation-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            border-bottom-left-radius: 5px;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .platform-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-left: 10px;
+        }
+
+        .personality-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🧠 Barbara Adaptive Chat</h1>
+            <p>Sistema de Consciencia Adaptativo - Se adapta a cualquier plataforma</p>
+            
+            <div class="platform-selector">
+                <label for="platform-select">Selecciona el contexto de plataforma:</label>
+                <select id="platform-select">
+                    <option value="generic">🔧 Plataforma Genérica</option>
+                    <option value="ecommerce">🛒 E-commerce / Tienda Online</option>
+                    <option value="customer_service">🎧 Servicio al Cliente</option>
+                    <option value="educational">📚 Educativa / Academia</option>
+                    <option value="healthcare">🏥 Salud / Médica</option>
+                    <option value="financial">💰 Financiera / Banco</option>
+                    <option value="entertainment">🎮 Entretenimiento</option>
+                    <option value="social_media">📱 Redes Sociales</option>
+                    <option value="productivity">⚡ Productividad</option>
+                    <option value="gaming">🎲 Gaming</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+            <div class="message barbara">
+                <div class="message-avatar">B</div>
+                <div class="message-content">
+                    <div>¡Hola! Soy Barbara, tu asistente inteligente con capacidad de adaptación dinámica. 🧠</div>
+                    <div class="message-info">
+                        Selecciona un contexto de plataforma arriba y verás cómo me adapto automáticamente a ese entorno.
+                    </div>
+                    <div class="adaptation-info">
+                        <strong>Estado actual:</strong> Plataforma genérica - Personalidad flexible
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typing-indicator">
+            <div class="typing-dots">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <div class="input-container">
+                <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí..." maxlength="500">
+                <button class="send-button" id="send-button" onclick="sendMessage()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPlatform = 'generic';
+        let isTyping = false;
+
+        // Mapeo de plataformas
+        const platformMap = {
+            'generic': { name: 'Genérica', icon: '🔧' },
+            'ecommerce': { name: 'E-commerce', icon: '🛒' },
+            'customer_service': { name: 'Servicio al Cliente', icon: '🎧' },
+            'educational': { name: 'Educativa', icon: '📚' },
+            'healthcare': { name: 'Salud', icon: '🏥' },
+            'financial': { name: 'Financiera', icon: '💰' },
+            'entertainment': { name: 'Entretenimiento', icon: '🎮' },
+            'social_media': { name: 'Redes Sociales', icon: '📱' },
+            'productivity': { name: 'Productividad', icon: '⚡' },
+            'gaming': { name: 'Gaming', icon: '🎲' }
+        };
+
+        // Configurar selector de plataforma
+        document.getElementById('platform-select').addEventListener('change', function(e) {
+            currentPlatform = e.target.value;
+            console.log('Plataforma cambiada a:', currentPlatform);
+        });
+
+        // Configurar input
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !isTyping) {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (!message || isTyping) return;
+
+            // Agregar mensaje del usuario
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Mostrar indicador de escritura
+            showTypingIndicator();
+
+            // Enviar mensaje al servidor
+            sendToBarbara(message);
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'user' ? 'Tú' : 'B';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.innerHTML = text;
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function addBarbaraMessage(response) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message barbara';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = 'B';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            // Contenido principal
+            content.innerHTML = response.response;
+
+            // Información de adaptación
+            if (response.platform_detected && response.personality_adapted) {
+                const platformInfo = document.createElement('div');
+                platformInfo.className = 'message-info';
+                platformInfo.innerHTML = `
+                    <span class="platform-badge">${platformMap[response.platform_detected]?.icon || '🔧'} ${response.platform_detected}</span>
+                    <span class="personality-badge">${response.personality_adapted}</span>
+                `;
+                content.appendChild(platformInfo);
+            }
+
+            // Información de adaptación detallada
+            if (response.adaptation_insights) {
+                const adaptationInfo = document.createElement('div');
+                adaptationInfo.className = 'adaptation-info';
+                adaptationInfo.innerHTML = `<strong>Adaptación:</strong> ${response.adaptation_insights}`;
+                content.appendChild(adaptationInfo);
+            }
+
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            isTyping = true;
+            document.getElementById('send-button').disabled = true;
+            document.getElementById('typing-indicator').style.display = 'block';
+            document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            isTyping = false;
+            document.getElementById('send-button').disabled = false;
+            document.getElementById('typing-indicator').style.display = 'none';
+        }
+
+        async function sendToBarbara(message) {
+            try {
+                const response = await fetch('/api/reasoning', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        user_id: 'adaptive_test_user',
+                        context: {
+                            platform_type: currentPlatform,
+                            domain: platformMap[currentPlatform]?.name || 'generic',
+                            user_role: 'tester',
+                            business_context: `Testing adaptive system for ${platformMap[currentPlatform]?.name || 'generic'} platform`
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                hideTypingIndicator();
+
+                if (data.success) {
+                    addBarbaraMessage(data);
+                } else {
+                    addMessage('❌ Error: ' + (data.error || 'Error desconocido'), 'barbara');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                hideTypingIndicator();
+                addMessage('❌ Error de conexión. Verifica que el servidor esté ejecutándose.', 'barbara');
+            }
+        }
+
+        // Mensaje inicial con información sobre la plataforma
+        setTimeout(() => {
+            const platformInfo = document.querySelector('.platform-selector');
+            if (platformInfo) {
+                platformInfo.style.animation = 'fadeIn 0.5s ease-in';
+            }
+        }, 1000);
+    </script>
+</body>
+</html> 

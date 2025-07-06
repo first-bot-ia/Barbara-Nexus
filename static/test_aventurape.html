@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbara-Nexus AventuraPe - Generador de Contenido</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .logo {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .result.success {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+        }
+        .result.error {
+            background: #fed7d7;
+            border: 2px solid #fc8181;
+        }
+        .result h3 {
+            margin-top: 0;
+            color: #2d3748;
+        }
+        .content-box {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .content-box h4 {
+            margin: 0 0 10px 0;
+            color: #4a5568;
+        }
+        .content-box p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status.online {
+            background: #f0fff4;
+            color: #38a169;
+            border: 2px solid #68d391;
+        }
+        .status.offline {
+            background: #fed7d7;
+            color: #e53e3e;
+            border: 2px solid #fc8181;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏔️</div>
+        <h1>Barbara-Nexus AventuraPe</h1>
+        <p style="text-align: center; color: #718096; margin-bottom: 30px;">
+            Generador de contenido inteligente para aventuras turísticas
+        </p>
+
+        <div id="status" class="status">
+            Verificando estado del servidor...
+        </div>
+
+        <form id="generateForm">
+            <div class="form-group">
+                <label for="context">Describe tu aventura:</label>
+                <textarea 
+                    id="context" 
+                    name="context" 
+                    placeholder="Ejemplo: Aventura de senderismo en Cusco por 2 días, incluyendo visitas a sitios arqueológicos y paisajes montañosos..."
+                    required
+                ></textarea>
+            </div>
+            
+            <button type="submit" id="generateBtn">
+                🚀 Generar Título y Descripción
+            </button>
+        </form>
+
+        <div id="result" class="result">
+            <h3>🎯 Contenido Generado</h3>
+            <div class="content-box">
+                <h4>📝 Título:</h4>
+                <p id="generatedTitle"></p>
+            </div>
+            <div class="content-box">
+                <h4>📄 Descripción:</h4>
+                <p id="generatedDescription"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:5000/aventurape';
+        
+        // Verificar estado del servidor
+        async function checkServerStatus() {
+            const statusDiv = document.getElementById('status');
+            try {
+                const response = await fetch(`${API_BASE}/health`, { timeout: 3000 });
+                if (response.ok) {
+                    statusDiv.className = 'status online';
+                    statusDiv.textContent = '✅ Servidor en línea - Barbara-Nexus funcionando';
+                } else {
+                    throw new Error('Servidor no responde correctamente');
+                }
+            } catch (error) {
+                statusDiv.className = 'status offline';
+                statusDiv.textContent = '❌ Servidor offline - Verifica que Barbara-Nexus esté corriendo';
+            }
+        }
+
+        // Generar contenido
+        async function generateContent(context) {
+            const generateBtn = document.getElementById('generateBtn');
+            const resultDiv = document.getElementById('result');
+            
+            generateBtn.disabled = true;
+            generateBtn.textContent = '⏳ Generando...';
+            resultDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE}/generate-content`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ context: context })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('generatedTitle').textContent = data.content.title;
+                    document.getElementById('generatedDescription').textContent = data.content.description;
+                    
+                    resultDiv.className = 'result success';
+                    resultDiv.style.display = 'block';
+                } else {
+                    throw new Error(data.error || 'Error desconocido');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<h3>❌ Error</h3><p>${error.message}</p>`;
+                resultDiv.style.display = 'block';
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = '🚀 Generar Título y Descripción';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('generateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const context = document.getElementById('context').value.trim();
+            if (context) {
+                generateContent(context);
+            }
+        });
+
+        // Verificar estado al cargar la página
+        checkServerStatus();
+    </script>
+</body>
+</html> 
